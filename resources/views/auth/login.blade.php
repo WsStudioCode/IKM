@@ -16,14 +16,12 @@
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
-
             <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required
                 autocomplete="current-password" />
-
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
-
+        <!-- Remember Me -->
         <div class="block mt-4">
             <label for="remember_me" class="inline-flex items-center">
                 <input id="remember_me" type="checkbox"
@@ -32,23 +30,12 @@
             </label>
         </div>
 
-        <div class="mt-6 flex items-center justify-between">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button>
+        <!-- Login Button -->
+        <div class="mt-6">
+            <x-primary-button class="w-full justify-content-center">
                 {{ __('Log in') }}
             </x-primary-button>
         </div>
 
-        <div class="mt-6 text-center text-sm text-gray-600">
-            {{ __('Belum punya akun?') }}
-            <a href="{{ route('register') }}" class="text-indigo-600 hover:underline">
-                {{ __('Daftar di sini') }}
-            </a>
-        </div>
     </form>
 </x-guest-layout>

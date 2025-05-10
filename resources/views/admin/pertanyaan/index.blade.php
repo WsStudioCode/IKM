@@ -1,30 +1,28 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Daftar Pertanyaan') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-6">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <a href="{{ route('pertanyaan.create') }}"
-                class="mb-4 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                Tambah Pertanyaan
-            </a>
+@section('content')
+    {{-- HEADER --}}
+    <nav aria-label="breadcrumb" class="mb-3 d-flex justify-content-between align-items-center">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Pertanyaan</li>
+        </ol>
+        <a href="{{ route('pertanyaan.create') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i> Tambah Pertanyaan
+        </a>
+    </nav>
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                <div class="overflow-x-auto">
-                    {!! $dataTable->table(
-                        ['class' => 'cell-border w-full min-w-max table table-bordered table-striped whitespace-nowrap'],
-                        true,
-                    ) !!}
-                </div>
+    {{-- TABEL --}}
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                {!! $dataTable->table(['class' => 'table table-bordered table-striped w-100'], true) !!}
             </div>
         </div>
     </div>
+@endsection
 
-    {{-- Push scripts to bottom --}}
-    @push('scripts')
-        {!! $dataTable->scripts() !!}
-    @endpush
-</x-app-layout>
+@push('scripts')
+    <script src="{{ asset('/lightbox/fslightbox.js') }}"></script>
+    {{ $dataTable->scripts() }}
+@endpush

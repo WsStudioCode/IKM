@@ -28,7 +28,7 @@ class KategoriPertanyaanController extends Controller
             'nama' => $request->nama,
         ]);
 
-        return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil ditambahkan.');
+        return redirect()->route('kategori-pertanyaan.index')->with('success', 'Kategori berhasil ditambahkan.');
     }
 
     public function edit(KategoriPertanyaan $kategoriPertanyaan)
@@ -46,13 +46,13 @@ class KategoriPertanyaanController extends Controller
             'nama' => $request->nama,
         ]);
 
-        return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil diperbarui.');
+        return redirect()->route('kategori-pertanyaan.index')->with('success', 'Kategori berhasil diperbarui.');
     }
 
     public function destroy(KategoriPertanyaan $kategoriPertanyaan)
     {
         $kategoriPertanyaan->delete();
 
-        return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil dihapus.');
+        return redirect()->route('kategori-pertanyaan.index')->with('success', 'Kategori berhasil di hapus.');
     }
 }

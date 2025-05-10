@@ -59,12 +59,25 @@ class PertanyaanDataTable extends DataTable
             ->selectStyleSingle()
             ->scrollX(true)
             ->buttons([
-                ['extend' => 'excel', 'text' => 'Export Excel'],
-                ['extend' => 'pdf', 'text' => 'Export PDF'],
-                ['extend' => 'print', 'text' => 'Print'],
                 [
-                    'text' => 'Reload',
-                    'action' => 'function ( e, dt, node, config ) { dt.ajax.reload(); }'
+                    'extend' => 'excel',
+                    'text' => '<i class="fas fa-file-excel"></i>',
+                    'className' => 'btn btn-md me-2',
+                ],
+                [
+                    'extend' => 'pdf',
+                    'text' => '<i class="fas fa-file-pdf"></i>',
+                    'className' => 'btn btn-md me-2',
+                ],
+                [
+                    'extend' => 'print',
+                    'text' => '<i class="fas fa-print"></i>',
+                    'className' => 'btn btn-md me-2',
+                ],
+                [
+                    'text' => '<i class="fas fa-sync-alt"></i>',
+                    'className' => 'btn btn-md',
+                    'action' => 'function ( e, dt, node, config ) { dt.ajax.reload(); }',
                 ],
             ]);
     }

@@ -6,6 +6,7 @@ use App\Models\Masyarakat;
 use App\Models\Pertanyaan;
 use App\Models\KategoriPertanyaan;
 use App\Models\HasilKuesioner;
+use App\Models\Pengaduan;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -13,13 +14,13 @@ class AdminController extends Controller
     public function dashboard(Request $request)
     {
         $tahunDipilih = $request->input('tahun', now()->year);
-
         $tahunRange = range(2020, 2025);
 
         $totalMasyarakat = Masyarakat::count();
         $totalPertanyaan = Pertanyaan::count();
         $totalKategori = KategoriPertanyaan::count();
 
+        // Grafik Kepuasan
         $grafikData = HasilKuesioner::selectRaw('MONTH(tanggal_isi) as bulan, kategori_hasil, COUNT(*) as jumlah')
             ->whereYear('tanggal_isi', $tahunDipilih)
             ->groupBy('bulan', 'kategori_hasil')
@@ -43,6 +44,22 @@ class AdminController extends Controller
             ->latest('tanggal_isi')
             ->paginate(10);
 
+        $jumlahPengaduan = Pengaduan::whereYear('created_at', $tahunDipilih)->count();
+        $jumlahMenunggu = Pengaduan::whereYear('created_at', $tahunDipilih)->where('status', 'menunggu')->count();
+        $jumlahDiproses = Pengaduan::whereYear('created_at', $tahunDipilih)->where('status', 'diproses')->count();
+        $jumlahSelesai = Pengaduan::whereYear('created_at', $tahunDipilih)->where('status', 'selesai')->count();
+
+        $pengaduanBulanan = Pengaduan::selectRaw('MONTH(created_at) as bulan, COUNT(*) as total')
+            ->whereYear('created_at', $tahunDipilih)
+            ->groupByRaw('MONTH(created_at)')
+            ->pluck('total', 'bulan')
+            ->all();
+
+        $grafikPengaduan = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $grafikPengaduan[] = $pengaduanBulanan[$i] ?? 0;
+        }
+
         return view('dashboard', [
             'totalMasyarakat' => $totalMasyarakat,
             'totalPertanyaan' => $totalPertanyaan,
@@ -55,7 +72,12 @@ class AdminController extends Controller
                 'Sesuai' => array_values($grafik['Sesuai']),
                 'Kurang Sesuai' => array_values($grafik['Kurang Sesuai']),
                 'Tidak Sesuai' => array_values($grafik['Tidak Sesuai']),
-            ]
+            ],
+            'jumlahPengaduan' => $jumlahPengaduan,
+            'jumlahMenunggu' => $jumlahMenunggu,
+            'jumlahDiproses' => $jumlahDiproses,
+            'jumlahSelesai' => $jumlahSelesai,
+            'grafikPengaduan' => $grafikPengaduan,
         ]);
     }
 }

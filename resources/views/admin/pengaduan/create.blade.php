@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Tambah Pertanyaan') }}
+            {{ __('Tambah Pengaduan') }}
         </h2>
     </x-slot>
 
@@ -20,7 +20,7 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('pertanyaan.store') }}" class="space-y-6">
+                <form method="POST" action="{{ route('pengaudan.store') }}" class="space-y-6">
                     @csrf
 
                     <div>

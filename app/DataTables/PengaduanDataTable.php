@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 use App\Models\Pengaduan;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -23,6 +24,9 @@ class PengaduanDataTable extends DataTable
             ->addIndexColumn()
             ->addColumn('nama_masyarakat', fn($row) => $row->masyarakat->nama ?? '-')
             ->addColumn('tanggapan', fn($row) => $row->tindakLanjut->tanggapan ?? '-')
+            ->editColumn('created_at', function ($row) {
+                return Carbon::parse($row->created_at)->translatedFormat('d F Y H:i');
+            })
             ->addColumn('action', function ($row) {
                 return view('admin.pengaduan.partials.actions', compact('row'))->render();
             })
@@ -51,12 +55,25 @@ class PengaduanDataTable extends DataTable
             ->selectStyleSingle()
             ->scrollX(true)
             ->buttons([
-                ['extend' => 'excel', 'text' => 'Export Excel'],
-                ['extend' => 'pdf', 'text' => 'Export PDF'],
-                ['extend' => 'print', 'text' => 'Print'],
                 [
-                    'text' => 'Reload',
-                    'action' => 'function ( e, dt, node, config ) { dt.ajax.reload(); }'
+                    'extend' => 'excel',
+                    'text' => '<i class="fas fa-file-excel"></i>',
+                    'className' => 'btn btn-md me-2',
+                ],
+                [
+                    'extend' => 'pdf',
+                    'text' => '<i class="fas fa-file-pdf"></i>',
+                    'className' => 'btn btn-md me-2',
+                ],
+                [
+                    'extend' => 'print',
+                    'text' => '<i class="fas fa-print"></i>',
+                    'className' => 'btn btn-md me-2',
+                ],
+                [
+                    'text' => '<i class="fas fa-sync-alt"></i>',
+                    'className' => 'btn btn-md',
+                    'action' => 'function ( e, dt, node, config ) { dt.ajax.reload(); }',
                 ],
             ]);
     }
@@ -75,6 +92,7 @@ class PengaduanDataTable extends DataTable
             Column::make('isi')->title('Isi Pengaduan'),
             Column::make('status')->title('Status'),
             Column::computed('tanggapan')->title('Tanggapan Admin'),
+            Column::make('created_at')->title('Tanggal Pengaduan'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
