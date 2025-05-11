@@ -3,84 +3,47 @@
 @section('content')
     {{-- STATISTIK --}}
     <div class="row g-4 mb-4">
-        <div class="col-md-2">
-            <div class="card h-100 text-center">
-                <div class="card-body">
-                    <h6 class="text-muted">Jumlah Masyarakat</h6>
-                    <h3 class="text-primary">{{ $totalMasyarakat }}</h3>
+        @php
+            $stats = [
+                ['label' => 'Jumlah Masyarakat', 'value' => $totalMasyarakat, 'class' => 'text-primary'],
+                ['label' => 'Jumlah Pertanyaan', 'value' => $totalPertanyaan, 'class' => 'text-success'],
+                ['label' => 'Jumlah Kategori', 'value' => $totalKategori, 'class' => 'text-secondary'],
+                ['label' => 'Total Pengaduan', 'value' => $jumlahPengaduan, 'class' => 'text-dark'],
+                ['label' => 'Menunggu', 'value' => $jumlahMenunggu, 'class' => 'text-warning'],
+                ['label' => 'Diproses', 'value' => $jumlahDiproses, 'class' => 'text-primary'],
+                ['label' => 'Selesai', 'value' => $jumlahSelesai, 'class' => 'text-success'],
+            ];
+        @endphp
+        @foreach ($stats as $stat)
+            <div class="col-md-2">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <h6 class="text-muted">{{ $stat['label'] }}</h6>
+                        <h3 class="{{ $stat['class'] }}">{{ $stat['value'] }}</h3>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-2">
-            <div class="card h-100 text-center">
-                <div class="card-body">
-                    <h6 class="text-muted">Jumlah Pertanyaan</h6>
-                    <h3 class="text-success">{{ $totalPertanyaan }}</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="card h-100 text-center">
-                <div class="card-body">
-                    <h6 class="text-muted">Jumlah Kategori</h6>
-                    <h3 class="text-secondary">{{ $totalKategori }}</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="card h-100 text-center">
-                <div class="card-body">
-                    <h6 class="text-muted">Total Pengaduan</h6>
-                    <h3 class="text-dark">{{ $jumlahPengaduan }}</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="card h-100 text-center">
-                <div class="card-body">
-                    <h6 class="text-muted">Menunggu</h6>
-                    <h3 class="text-warning">{{ $jumlahMenunggu }}</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="card h-100 text-center">
-                <div class="card-body">
-                    <h6 class="text-muted">Diproses</h6>
-                    <h3 class="text-primary">{{ $jumlahDiproses }}</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="card h-100 text-center">
-                <div class="card-body">
-                    <h6 class="text-muted">Selesai</h6>
-                    <h3 class="text-success">{{ $jumlahSelesai }}</h3>
-                </div>
-            </div>
-        </div>
+        @endforeach
     </div>
 
-
-
-    {{-- CHART --}}
+    {{-- GRAFIK PENGADUAN --}}
     <div class="mb-4">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <span>Grafik Pengaduan Bulanan ({{ request('tahun') ?? date('Y') }})</span>
+                <span>Grafik Pengaduan Bulanan ({{ $tahunPengaduan }})</span>
                 <form method="GET" class="d-flex align-items-center">
-                    <label for="tahun" class="me-2 mb-0 small">Tahun:</label>
-                    <select name="tahun" id="tahun" class="form-select form-select-sm" onchange="this.form.submit()"
-                        style="width: 100px;">
+                    <label for="tahun_pengaduan" class="me-2 mb-0 small">Tahun:</label>
+                    <select name="tahun_pengaduan" id="tahun_pengaduan" class="form-select form-select-sm"
+                        onchange="this.form.submit()" style="width: 100px;">
                         @foreach ($listTahun as $th)
-                            <option value="{{ $th }}" @selected(request('tahun', date('Y')) == $th)>
+                            <option value="{{ $th }}" @selected($tahunPengaduan == $th)>
                                 {{ $th }}
                             </option>
                         @endforeach
                     </select>
+                    <input type="hidden" name="tahun_kepuasan" value="{{ $tahunKepuasan }}">
                 </form>
             </div>
-
             <div class="card-body">
                 <div class="chart-container" style="position: relative; height: 300px;">
                     <canvas id="chartPengaduan" class="w-100"></canvas>
@@ -89,27 +52,28 @@
         </div>
     </div>
 
+    {{-- GRAFIK KEPUASAN --}}
     <div class="mb-4">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <span>Grafik Tingkat Kepuasan ({{ request('tahun') ?? date('Y') }})</span>
+                <span>Grafik Tingkat Kepuasan ({{ $tahunKepuasan }})</span>
                 <form method="GET" class="d-flex align-items-center">
-                    <label for="tahun" class="me-2 mb-0 small">Tahun:</label>
-                    <select name="tahun" id="tahun" class="form-select form-select-sm" onchange="this.form.submit()"
-                        style="width: 100px;">
+                    <label for="tahun_kepuasan" class="me-2 mb-0 small">Tahun:</label>
+                    <select name="tahun_kepuasan" id="tahun_kepuasan" class="form-select form-select-sm"
+                        onchange="this.form.submit()" style="width: 100px;">
                         @foreach ($listTahun as $th)
-                            <option value="{{ $th }}" @selected(request('tahun', date('Y')) == $th)>
+                            <option value="{{ $th }}" @selected($tahunKepuasan == $th)>
                                 {{ $th }}
                             </option>
                         @endforeach
                     </select>
+                    <input type="hidden" name="tahun_pengaduan" value="{{ $tahunPengaduan }}">
                 </form>
             </div>
             <div class="card-body">
                 <div class="chart-container" style="position: relative; height: 300px;">
                     <canvas id="chartKepuasan" class="w-100" style="display: block;"></canvas>
                 </div>
-
             </div>
             <div class="card-footer bg-white p-3">
                 <div class="d-flex justify-content-center flex-wrap gap-3">
@@ -126,7 +90,7 @@
         </div>
     </div>
 
-    {{-- TABEL --}}
+    {{-- TABEL KEPUASAN --}}
     <div class="mb-4">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
@@ -148,7 +112,7 @@
         Chart.defaults.font.size = 12;
         Chart.defaults.color = '#666';
 
-        const chart = new Chart(document.getElementById('chartKepuasan'), {
+        new Chart(document.getElementById('chartKepuasan'), {
             type: 'line',
             data: {
                 labels: @json($grafik['bulan']),
@@ -214,12 +178,10 @@
                         padding: 10,
                         usePointStyle: true,
                         callbacks: {
-                            labelPointStyle: function() {
-                                return {
-                                    pointStyle: 'rectRounded',
-                                    rotation: 0
-                                };
-                            }
+                            labelPointStyle: () => ({
+                                pointStyle: 'rectRounded',
+                                rotation: 0
+                            })
                         }
                     }
                 },
@@ -243,7 +205,7 @@
             }
         });
 
-        const chartPengaduan = new Chart(document.getElementById('chartPengaduan'), {
+        new Chart(document.getElementById('chartPengaduan'), {
             type: 'bar',
             data: {
                 labels: @json($grafik['bulan']),
