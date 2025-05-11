@@ -102,4 +102,24 @@ class PengaduanController extends Controller
         $pengaduan->delete();
         return redirect()->route('pengaduan.index')->with('success', 'Pengaduan berhasil dihapus.');
     }
+
+    public function createPengaduan()
+    {
+        return view('responden.pengaduan');
+    }
+
+    public function storePengaduan(Request $request)
+    {
+        $request->validate([
+            'isi' => 'required|string|max:1000',
+        ]);
+
+        Pengaduan::create([
+            'masyarakat_id' => session('masyarakat_id'),
+            'isi' => $request->isi,
+            'status' => 'Menunggu',
+        ]);
+
+        return redirect()->route('responden.masyarakat')->with('success', 'Pengaduan berhasil dikirim! Menunggu tindak lanjut.');
+    }
 }

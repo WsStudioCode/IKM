@@ -1,14 +1,18 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\HasilIkmController;
 use App\Http\Controllers\HasilKuesionerController;
 use App\Http\Controllers\KategoriPertanyaanController;
+use App\Http\Controllers\KuesionerController;
 use App\Http\Controllers\MasyarakatController;
 use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\PertanyaanController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TindakLanjutController;
 use App\Models\HasilKuesioner;
+use App\Models\Pengaduan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,9 +26,33 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return redirect('/login');
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
 });
+
+
+Route::get('/', [MasyarakatController::class, 'create'])->name('masyarakat.form');
+Route::post('/masyarakat', [MasyarakatController::class, 'store'])->name('masyarakat.store');
+Route::get('/masyarakat/kuesioner', [KuesionerController::class, 'index'])->name('kuesioner.form');
+Route::post('/masyarakat/kuesioner', [KuesionerController::class, 'submit'])->name('kuesioner.submit');
+
+Route::get('/masyarakat/pengaduan', [PengaduanController::class, 'createPengaduan'])->name('pengaduan.form');
+Route::post('/masyarakat/pengaduan', [PengaduanController::class, 'storePengaduan'])->name('pengaduan.store');
+
+Route::get('/tindak-lanjut', [TindakLanjutController::class, 'index'])->name('tindak-lanjut.index');
+Route::get('/tindak-lanjut/{pengaduan}', [TindakLanjutController::class, 'show'])->name('tindak-lanjut.show');
+Route::post('/tindak-lanjut/{pengaduan}/komentar', [TindakLanjutController::class, 'komentar'])->name('tindak-lanjut.komentar');
+
+
+
+Route::get('/masyarakat/dashboard', function () {
+    if (!session()->has('masyarakat_id')) {
+        return redirect('/');
+    }
+
+    return view('responden.masyarakat');
+})->name('responden.masyarakat');
+
 
 
 Route::middleware('auth')->prefix('admin')->group(function () {
@@ -57,8 +85,6 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     // Pengaduan
     Route::get('/pengaduan/{pengaduan}', [PengaduanController::class, 'show'])->name('pengaduan.show');
     Route::get('/pengaduan', [PengaduanController::class, 'index'])->name('pengaduan.index');
-    Route::get('/pengaduan/create', [PengaduanController::class, 'create'])->name('pengaduan.create');
-    Route::post('/pengaduan', [PengaduanController::class, 'store'])->name('pengaduan.store');
     Route::get('/pengaduan/{pengaduan}/edit', [PengaduanController::class, 'edit'])->name('pengaduan.edit');
     Route::put('/pengaduan/{pengaduan}', [PengaduanController::class, 'update'])->name('pengaduan.update');
     Route::delete('/pengaduan/{pengaduan}', [PengaduanController::class, 'destroy'])->name('pengaduan.destroy');
