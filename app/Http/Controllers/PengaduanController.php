@@ -75,7 +75,13 @@ class PengaduanController extends Controller
             'isi' => 'required|string',
             'status' => 'required|in:Menunggu,Diproses,Selesai',
             'tanggapan' => 'nullable|string',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
+
+        $path = null;
+        if ($request->hasFile('gambar')) {
+            $path = $request->file('gambar')->store('pengaduan', 'public');
+        }
 
         $pengaduan->update([
             'masyarakat_id' => $request->masyarakat_id,
@@ -86,7 +92,7 @@ class PengaduanController extends Controller
         if ($request->filled('tanggapan')) {
             $pengaduan->tindakLanjut()->updateOrCreate(
                 ['pengaduan_id' => $pengaduan->id],
-                ['tanggapan' => $request->tanggapan, 'tanggal_tindak_lanjut' => now()]
+                ['tanggapan' => $request->tanggapan, 'tanggal_tindak_lanjut' => now(), 'gambar' => $path]
             );
         }
 
@@ -112,11 +118,18 @@ class PengaduanController extends Controller
     {
         $request->validate([
             'isi' => 'required|string|max:1000',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
+
+        $path = null;
+        if ($request->hasFile('gambar')) {
+            $path = $request->file('gambar')->store('pengaduan', 'public');
+        }
 
         Pengaduan::create([
             'masyarakat_id' => session('masyarakat_id'),
             'isi' => $request->isi,
+            'gambar' => $path,
             'status' => 'Menunggu',
         ]);
 

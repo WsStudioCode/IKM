@@ -10,10 +10,11 @@
 <body class="bg-gray-100 min-h-screen">
 
     {{-- Navbar --}}
-    <nav class="bg-white shadow-md mb-6">
+    <nav class="bg-red-700 text-white shadow mb-6">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="text-xl font-bold text-gray-800">IKM Dashboard</h1>
-            <a href="{{ url('/') }}" class="text-red-600 hover:underline font-medium">Beranda</a>
+            <h1 class="text-2xl font-bold">IKM - Indeks Kepuasan Masyarakat</h1>
+            <a href="{{ url('/') }}"
+                class="bg-white text-red-700 px-4 py-1 rounded hover:bg-gray-100 transition font-medium text-sm">Beranda</a>
         </div>
     </nav>
 

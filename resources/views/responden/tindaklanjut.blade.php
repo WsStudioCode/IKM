@@ -10,10 +10,11 @@
 <body class="bg-gray-100 min-h-screen">
 
     {{-- Navbar --}}
-    <nav class="bg-white shadow mb-6">
+    <nav class="bg-red-700 text-white shadow mb-6">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="text-xl font-bold text-gray-800">Forum Diskusi Pengaduan Publik</h1>
-            <a href="{{ route('responden.masyarakat') }}" class="text-red-600 hover:underline">Dashboard</a>
+            <h1 class="text-2xl font-bold">IKM - Indeks Kepuasan Masyarakat</h1>
+            <a href="{{ url('/') }}"
+                class="bg-white text-red-700 px-4 py-1 rounded hover:bg-gray-100 transition font-medium text-sm">Beranda</a>
         </div>
     </nav>
 
@@ -37,6 +38,7 @@
 
                 {{-- Isi Pengaduan --}}
                 <p class="mt-2 text-gray-700 mb-4">{{ $item->isi }}</p>
+
 
                 {{-- Tindak Lanjut --}}
                 @if ($item->tindakLanjut)

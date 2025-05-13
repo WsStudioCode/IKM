@@ -6,17 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Registrasi Masyarakat</title>
 
-    <!-- ✅ CDN TailwindCSS versi stabil langsung dari tailwindcss.com -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-gray-100 min-h-screen">
 
     <!-- Navbar -->
-    <nav class="bg-white shadow-md">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="text-xl font-bold text-gray-800">IKM - Indeks Kepuasan Masyarakat</h1>
-            <a href="{{ route('login') }}" class="text-red-600 hover:underline font-medium">Login Admin</a>
+    <nav class="bg-red-700 text-white shadow mb-6">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold">IKM - Indeks Kepuasan Masyarakat</h1>
+            <a href="{{ url('/') }}"
+                class="bg-white text-red-700 px-4 py-1 rounded hover:bg-gray-100 transition font-medium text-sm">Beranda</a>
         </div>
     </nav>
 
@@ -25,12 +25,24 @@
         <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">Formulir Data Masyarakat</h2>
 
         @if (session('success'))
-            <div class="bg-green-100 text-green-700 p-4 rounded mb-4">
+            <div id="success-alert"
+                class="bg-green-100 text-green-700 p-4 rounded mb-4 transition-opacity duration-500">
                 {{ session('success') }}
             </div>
         @endif
 
         <form action="{{ route('masyarakat.store') }}" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            @if ($errors->any())
+                <div id="error-alert" class="bg-red-100 text-red-700 p-4 rounded mb-4 transition-opacity duration-500">
+                    <ul class="list-disc pl-5">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+
             @csrf
 
             <div>
@@ -53,8 +65,17 @@
             </div>
 
             <div>
-                <label class="block text-sm font-medium text-gray-700">Pendidikan</label>
-                <input type="text" name="pendidikan" class="w-full mt-1 p-2 border border-gray-300 rounded" required>
+                <label for="pendidikan" class="block text-sm font-medium text-gray-700">Pendidikan</label>
+                <select name="pendidikan" id="pendidikan" class="w-full mt-1 p-2 border border-gray-300 rounded"
+                    required>
+                    <option value="">-- Pilih Pendidikan --</option>
+                    @foreach (\App\Enums\PendidikanEnum::cases() as $item)
+                        <option value="{{ $item->value }}"
+                            {{ old('pendidikan', $masyarakat->pendidikan->value ?? '') === $item->value ? 'selected' : '' }}>
+                            {{ $item->value }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
 
             <div>
@@ -90,6 +111,28 @@
             </div>
         </form>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const successAlert = document.getElementById('success-alert');
+
+            if (successAlert) {
+                setTimeout(() => {
+                    alert.classList.add('opacity-0');
+                    setTimeout(() => alert.remove(), 500);
+                }, 2000);
+            }
+
+            const errorAlert = document.getElementById('error-alert');
+            if (errorAlert) {
+                setTimeout(() => {
+                    errorAlert.classList.add('opacity-0');
+                    setTimeout(() => errorAlert.remove(), 500);
+                }, 4000);
+            }
+        });
+    </script>
+
 
 </body>
 

@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('tindak_lanjut', function (Blueprint $table) {
             $table->id();
             $table->foreignId('pengaduan_id')->constrained('pengaduan')->onDelete('cascade');
-            $table->text('tanggapan');
+            $table->json('tanggapan')->nullable();
+            $table->json('gambar')->nullable();
             $table->timestamp('tanggal_tindak_lanjut')->useCurrent();
             $table->timestamps();
         });
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tindak_lanjuts');
+        Schema::dropIfExists('tindak_lanjut');
     }
 };

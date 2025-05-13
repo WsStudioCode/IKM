@@ -64,11 +64,7 @@ class MasyarakatDataTable extends DataTable
                     'text' => '<i class="fas fa-file-pdf"></i>',
                     'className' => 'btn btn-md me-2',
                 ],
-                [
-                    'extend' => 'print',
-                    'text' => '<i class="fas fa-print"></i>',
-                    'className' => 'btn btn-md me-2',
-                ],
+
                 [
                     'text' => '<i class="fas fa-sync-alt"></i>',
                     'className' => 'btn btn-md',

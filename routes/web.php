@@ -12,7 +12,9 @@ use App\Http\Controllers\PertanyaanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TindakLanjutController;
 use App\Models\HasilKuesioner;
+use App\Models\Masyarakat;
 use App\Models\Pengaduan;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,28 +32,63 @@ Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
 });
 
+Route::get('/', function (Request $request) {
+    $query = Pengaduan::with(['masyarakat', 'tindakLanjut'])->withCount('komentar');
 
-Route::get('/', [MasyarakatController::class, 'create'])->name('masyarakat.form');
-Route::post('/masyarakat', [MasyarakatController::class, 'store'])->name('masyarakat.store');
-Route::get('/masyarakat/kuesioner', [KuesionerController::class, 'index'])->name('kuesioner.form');
-Route::post('/masyarakat/kuesioner', [KuesionerController::class, 'submit'])->name('kuesioner.submit');
-
-Route::get('/masyarakat/pengaduan', [PengaduanController::class, 'createPengaduan'])->name('pengaduan.form');
-Route::post('/masyarakat/pengaduan', [PengaduanController::class, 'storePengaduan'])->name('pengaduan.store');
-
-Route::get('/tindak-lanjut', [TindakLanjutController::class, 'index'])->name('tindak-lanjut.index');
-Route::get('/tindak-lanjut/{pengaduan}', [TindakLanjutController::class, 'show'])->name('tindak-lanjut.show');
-Route::post('/tindak-lanjut/{pengaduan}/komentar', [TindakLanjutController::class, 'komentar'])->name('tindak-lanjut.komentar');
-
-
-
-Route::get('/masyarakat/dashboard', function () {
-    if (!session()->has('masyarakat_id')) {
-        return redirect('/');
+    if ($request->filled('q')) {
+        $query->where('isi', 'like', '%' . $request->q . '%');
     }
 
-    return view('responden.masyarakat');
+    $pengaduan = $query->latest()->paginate(5);
+
+    $pelaporTerbaru = Pengaduan::with('masyarakat')
+        ->latest()
+        ->take(8)
+        ->get()
+        ->pluck('masyarakat')
+        ->unique('id')
+        ->values();
+
+    $laporanSukses = Pengaduan::where('status', 'Selesai')
+        ->latest()
+        ->take(5)
+        ->get();
+
+    $kuesioner = HasilKuesioner::with('masyarakat')->get();
+
+    $nilaiIKM = round($kuesioner->avg('nilai_rata_rata'), 2);
+    $jumlahResponden = $kuesioner->count();
+    $pria = $kuesioner->where('masyarakat.jenis_kelamin', 'Laki-laki')->count();
+    $wanita = $kuesioner->where('masyarakat.jenis_kelamin', 'Perempuan')->count();
+
+    $pendidikan = [
+        'SMA_SMK' => $kuesioner->filter(fn($k) => str_contains($k->masyarakat->pendidikan->value ?? '', 'SMA'))->count(),
+        'D1-D3' => $kuesioner->filter(fn($k) => in_array($k->masyarakat->pendidikan->value ?? '', ['D1', 'D2', 'D3']))->count(),
+        'D4-S1' => $kuesioner->filter(fn($k) => in_array($k->masyarakat->pendidikan->value ?? '', ['D4', 'S1']))->count(),
+        'S2-S3' => $kuesioner->filter(fn($k) => in_array($k->masyarakat->pendidikan->value ?? '', ['S2', 'S3']))->count(),
+    ];
+
+    $periode = [
+        'awal' => optional($kuesioner->min('tanggal_isi'))->format('d M Y'),
+        'akhir' => optional($kuesioner->max('tanggal_isi'))->format('d M Y'),
+    ];
+    return view('responden.masyarakat', compact('pengaduan', 'pelaporTerbaru', 'laporanSukses', 'nilaiIKM', 'jumlahResponden', 'pria', 'wanita', 'pendidikan', 'periode'));
 })->name('responden.masyarakat');
+
+Route::get('/masyarakat/form-registrasi', [MasyarakatController::class, 'create'])->name('masyarakat.form');
+Route::post('/masyarakat', [MasyarakatController::class, 'store'])->name('masyarakat.store');
+
+Route::middleware('masyarakat.session')->group(function () {
+    Route::get('/masyarakat/kuesioner', [KuesionerController::class, 'index'])->name('kuesioner.form');
+    Route::post('/masyarakat/kuesioner', [KuesionerController::class, 'submit'])->name('kuesioner.submit');
+
+    Route::get('/masyarakat/pengaduan', [PengaduanController::class, 'createPengaduan'])->name('pengaduan.form');
+    Route::post('/masyarakat/pengaduan', [PengaduanController::class, 'storePengaduan'])->name('pengaduan.store');
+
+    Route::get('/tindak-lanjut', [TindakLanjutController::class, 'index'])->name('tindak-lanjut.index');
+    Route::get('/tindak-lanjut/{pengaduan}', [TindakLanjutController::class, 'show'])->name('tindak-lanjut.show');
+    Route::post('/tindak-lanjut/{pengaduan}/komentar', [TindakLanjutController::class, 'komentar'])->name('tindak-lanjut.komentar');
+});
 
 
 
@@ -81,6 +118,11 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     // Hasil Kuesioner
     Route::get('/hasil-kuesioner', [HasilKuesionerController::class, 'index'])->name('hasil-kuesioner.index');
     Route::delete('/masyarakat/{masyarakat}', [MasyarakatController::class, 'destroy'])->name('masyarakat.destroy');
+    Route::get('/kepuasan/export', [AdminController::class, 'exportKepuasan'])
+        ->name('admin.export.kepuasan');
+    Route::get('/kuesioner/export-pdf', [\App\Http\Controllers\HasilKuesionerController::class, 'exportPDF'])->name('hasilkuesioner.export.pdf');
+    Route::get('/kuesioner/export-excel', [HasilKuesionerController::class, 'exportExcel'])->name('hasilkuesioner.export.excel');
+
 
     // Pengaduan
     Route::get('/pengaduan/{pengaduan}', [PengaduanController::class, 'show'])->name('pengaduan.show');
@@ -88,6 +130,11 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('/pengaduan/{pengaduan}/edit', [PengaduanController::class, 'edit'])->name('pengaduan.edit');
     Route::put('/pengaduan/{pengaduan}', [PengaduanController::class, 'update'])->name('pengaduan.update');
     Route::delete('/pengaduan/{pengaduan}', [PengaduanController::class, 'destroy'])->name('pengaduan.destroy');
+
+    // tindak lanjut
+    Route::post('/pengaduan/{pengaduan}/tanggapan', [TindakLanjutController::class, 'storeTanggapan'])->name('tindak-lanjut.tanggapan.store');
+    Route::put('/pengaduan/{pengaduan}/tanggapan', [TindakLanjutController::class, 'updateTanggapan'])->name('tindak-lanjut.tanggapan.update');
+
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

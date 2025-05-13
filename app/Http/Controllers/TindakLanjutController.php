@@ -49,4 +49,83 @@ class TindakLanjutController extends Controller
 
         return redirect()->route('tindak-lanjut.index')->with('success', 'Komentar dikirim.');
     }
+
+    public function storeTanggapan(Request $request, Pengaduan $pengaduan)
+    {
+        $request->validate([
+            'tanggapan' => 'required|string',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $tindakLanjut = $pengaduan->tindakLanjut;
+
+        $tanggapans = $tindakLanjut?->tanggapan ?? [];
+        $gambars = $tindakLanjut?->gambar ?? [];
+
+        if (!is_array($tanggapans)) {
+            $tanggapans = json_decode($tanggapans, true) ?? [];
+        }
+
+        if (!is_array($gambars)) {
+            $gambars = json_decode($gambars, true) ?? [];
+        }
+
+
+        $gambarBaru = null;
+        if ($request->hasFile('gambar')) {
+            $gambarBaru = $request->file('gambar')->store('tindak_lanjut', 'public');
+        }
+
+
+        $tanggapans[] = $request->tanggapan;
+        $gambars[] = $gambarBaru;
+
+
+        $pengaduan->tindakLanjut()->updateOrCreate(
+            ['pengaduan_id' => $pengaduan->id],
+            [
+                'tanggapan' => $tanggapans,
+                'gambar' => $gambars,
+                'tanggal_tindak_lanjut' => now(),
+            ]
+        );
+
+        return back()->with('success', 'Tanggapan berhasil dikirim.');
+    }
+
+    public function updateTanggapan(Request $request, Pengaduan $pengaduan)
+    {
+
+        $request->validate([
+            'tanggapan' => 'required|string',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $tindakLanjut = $pengaduan->tindakLanjut;
+
+        $tanggapans = $tindakLanjut?->tanggapan ?? [];
+        $gambars = $tindakLanjut?->gambar ?? [];
+
+        if (!is_array($tanggapans)) $tanggapans = json_decode($tanggapans, true) ?? [];
+        if (!is_array($gambars)) $gambars = json_decode($gambars, true) ?? [];
+
+
+        if ($request->hasFile('gambar')) {
+            $gambarBaru = $request->file('gambar')->store('tindak_lanjut', 'public');
+        } else {
+            $gambarBaru = null;
+        }
+
+
+        $tanggapans[] = $request->tanggapan;
+        $gambars[] = $gambarBaru;
+
+        $pengaduan->tindakLanjut()->update([
+            'tanggapan' => $tanggapans,
+            'gambar' => $gambars,
+            'tanggal_tindak_lanjut' => now(),
+        ]);
+
+        return back()->with('success', 'Tanggapan berhasil diperbarui.');
+    }
 }

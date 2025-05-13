@@ -15,6 +15,7 @@ class Pengaduan extends Model
         'masyarakat_id',
         'isi',
         'status',
+        'gambar'
     ];
 
 

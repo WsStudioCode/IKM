@@ -16,11 +16,11 @@ class DatabaseSeeder extends Seeder
             // KategoriPertanyaanSeeder::class,
             // PertanyaanSeeder::class,
             // MasyarakatSeeder::class,
-            // HasilKuesionerSeeder::class
-            MasyarakatSeeder::class,
-            PengaduanSeeder::class,
-            TindakLanjutSeeder::class,
-            KomentarSeeder::class,
+            HasilKuesionerSeeder::class
+            // MasyarakatSeeder::class,
+            // PengaduanSeeder::class,
+            // TindakLanjutSeeder::class,
+            // KomentarSeeder::class,
         ]);
     }
 }

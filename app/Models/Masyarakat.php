@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PendidikanEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,6 +25,7 @@ class Masyarakat extends Model
 
     protected $casts = [
         'tanggal_mengisi' => 'datetime',
+        'pendidikan' => PendidikanEnum::class,
     ];
 
     public function pengaduan()

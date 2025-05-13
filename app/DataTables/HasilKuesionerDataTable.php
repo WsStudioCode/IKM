@@ -6,7 +6,6 @@ use App\Models\HasilKuesioner;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
-use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 use Carbon\Carbon;
@@ -15,8 +14,6 @@ class HasilKuesionerDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
-     *
-     * @param QueryBuilder $query Results from query() method.
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
@@ -26,7 +23,7 @@ class HasilKuesionerDataTable extends DataTable
                 return $row->masyarakat->nama ?? '-';
             })
             ->editColumn('tanggal_isi', function ($row) {
-                return Carbon::parse($row->tanggal_isi)->translatedFormat('d F Y H:i');
+                return Carbon::parse($row->tanggal_isi)->translatedFormat('d F Y');
             })
             ->addColumn('action', function ($row) {
                 return view('admin.hasilkuesioner.partials.actions', compact('row'))->render();
@@ -39,11 +36,32 @@ class HasilKuesionerDataTable extends DataTable
      */
     public function query(HasilKuesioner $model): QueryBuilder
     {
-        return $model->newQuery()->with('masyarakat');
+        $query = $model->newQuery()->with('masyarakat');
+
+        $periode = request()->get('periode', 12);
+        $tahun = request()->get('tahun', now()->year);
+        $search = request()->get('search_custom');
+
+        $query->whereYear('tanggal_isi', $tahun);
+
+        if ($periode == 3) {
+            $query->where('tanggal_isi', '>=', Carbon::now()->subMonths(3)->startOfMonth());
+        } elseif ($periode == 6) {
+            $query->where('tanggal_isi', '>=', Carbon::now()->subMonths(6)->startOfMonth());
+        }
+
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('masyarakat', fn($m) => $m->where('nama', 'like', '%' . $search . '%'))
+                    ->orWhere('kategori_hasil', 'like', '%' . $search . '%');
+            });
+        }
+
+        return $query;
     }
 
     /**
-     * Optional method if you want to use the html builder.
+     * Configure the DataTable HTML builder.
      */
     public function html(): HtmlBuilder
     {
@@ -51,36 +69,13 @@ class HasilKuesionerDataTable extends DataTable
             ->setTableId('hasilkuesioner-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->dom('Bfrtip')
+            ->dom('t<"d-flex justify-content-between align-items-center"lip>') // Remove search input
             ->scrollX(true)
-            ->orderBy(1)
-            ->selectStyleSingle()
-            ->buttons([
-                [
-                    'extend' => 'excel',
-                    'text' => '<i class="fas fa-file-excel"></i>',
-                    'className' => 'btn btn-md me-2',
-                ],
-                [
-                    'extend' => 'pdf',
-                    'text' => '<i class="fas fa-file-pdf"></i>',
-                    'className' => 'btn btn-md me-2',
-                ],
-                [
-                    'extend' => 'print',
-                    'text' => '<i class="fas fa-print"></i>',
-                    'className' => 'btn btn-md me-2',
-                ],
-                [
-                    'text' => '<i class="fas fa-sync-alt"></i>',
-                    'className' => 'btn btn-md',
-                    'action' => 'function ( e, dt, node, config ) { dt.ajax.reload(); }',
-                ],
-            ]);
+            ->orderBy(1);
     }
 
     /**
-     * Get the dataTable columns definition.
+     * Define the columns for the table.
      */
     public function getColumns(): array
     {
@@ -103,7 +98,7 @@ class HasilKuesionerDataTable extends DataTable
     }
 
     /**
-     * Get the filename for export.
+     * Optional: Filename if export used in the future.
      */
     protected function filename(): string
     {

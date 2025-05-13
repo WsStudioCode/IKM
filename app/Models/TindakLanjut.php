@@ -15,6 +15,7 @@ class TindakLanjut extends Model
         'pengaduan_id',
         'tanggapan',
         'tanggal_tindak_lanjut',
+        'gambar'
     ];
 
     public function pengaduan()
@@ -29,5 +30,7 @@ class TindakLanjut extends Model
 
     protected $casts = [
         'tanggal_tindak_lanjut' => 'datetime',
+        'tanggapan' => 'array',
+        'gambar' => 'array',
     ];
 }

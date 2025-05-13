@@ -57,18 +57,23 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <span>Grafik Tingkat Kepuasan ({{ $tahunKepuasan }})</span>
-                <form method="GET" class="d-flex align-items-center">
-                    <label for="tahun_kepuasan" class="me-2 mb-0 small">Tahun:</label>
-                    <select name="tahun_kepuasan" id="tahun_kepuasan" class="form-select form-select-sm"
-                        onchange="this.form.submit()" style="width: 100px;">
-                        @foreach ($listTahun as $th)
-                            <option value="{{ $th }}" @selected($tahunKepuasan == $th)>
-                                {{ $th }}
-                            </option>
-                        @endforeach
-                    </select>
+                <form method="GET" class="d-flex align-items-center gap-3 flex-wrap">
                     <input type="hidden" name="tahun_pengaduan" value="{{ $tahunPengaduan }}">
+                    <input type="hidden" name="tahun_kepuasan" value="{{ $tahunKepuasan }}">
+
+                    {{-- Dropdown Filter Periode --}}
+                    <label for="periode_kepuasan" class="mb-0 small">Periode:</label>
+                    <select name="periode_kepuasan" id="periode_kepuasan" class="form-select form-select-sm"
+                        onchange="this.form.submit()" style="width: 120px;">
+                        <option value="3" {{ request('periode_kepuasan') == '3' ? 'selected' : '' }}>3 Bulan</option>
+                        <option value="6" {{ request('periode_kepuasan') == '6' ? 'selected' : '' }}>6 Bulan</option>
+                        <option value="12" {{ request('periode_kepuasan', '12') == '12' ? 'selected' : '' }}>1 Tahun
+                        </option>
+                    </select>
+
+
                 </form>
+
             </div>
             <div class="card-body">
                 <div class="chart-container" style="position: relative; height: 300px;">

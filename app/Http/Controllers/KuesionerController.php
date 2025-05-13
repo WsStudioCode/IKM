@@ -10,6 +10,10 @@ class KuesionerController extends Controller
 {
     public function index(Request $request)
     {
+        if (!session()->has('masyarakat_id')) {
+            return redirect()->route('masyarakat.form');
+        }
+
         $page = $request->get('page', 1);
         $limit = 10;
 
@@ -24,6 +28,7 @@ class KuesionerController extends Controller
         return view('responden.kuesioner', compact('pertanyaan', 'page', 'totalPages'));
     }
 
+
     public function submit(Request $request)
     {
         $data = $request->validate([
@@ -32,21 +37,23 @@ class KuesionerController extends Controller
         ]);
 
         $nilai = array_values($data['jawaban']);
-        $rata = array_sum($nilai) / count($nilai);
+        $rataMentah = array_sum($nilai) / count($nilai);
 
-        if ($rata < 1.75) {
-            $kategori = 'Tidak Sesuai';
-        } elseif ($rata < 2.51) {
-            $kategori = 'Kurang Sesuai';
-        } elseif ($rata < 3.26) {
-            $kategori = 'Sesuai';
-        } else {
+        $rata = (($rataMentah - 1) / 3) * 75 + 25;
+
+        if ($rata >= 88.31) {
             $kategori = 'Sangat Sesuai';
+        } elseif ($rata >= 78.61) {
+            $kategori = 'Sesuai';
+        } elseif ($rata >= 65.00) {
+            $kategori = 'Kurang Sesuai';
+        } else {
+            $kategori = 'Tidak Sesuai';
         }
 
         HasilKuesioner::create([
             'masyarakat_id' => session('masyarakat_id'),
-            'nilai_rata_rata' => $rata,
+            'nilai_rata_rata' => round($rata, 2),
             'kategori_hasil' => $kategori,
             'tanggal_isi' => now(),
         ]);
