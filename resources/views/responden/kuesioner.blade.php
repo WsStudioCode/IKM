@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Kuesioner</title>
+    <title>{{ config('app.name', 'Indeks Kepuasan Masyarakat') }}</title>
+    <link rel="icon" href="{{ asset('logo2.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 

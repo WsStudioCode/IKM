@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - IKM</title>
+    <title>{{ config('app.name', 'Indeks Kepuasan Masyarakat') }}</title>
+    <link rel="icon" href="{{ asset('logo2.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
