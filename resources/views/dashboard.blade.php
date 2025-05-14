@@ -26,6 +26,68 @@
         @endforeach
     </div>
 
+    <div class="card bg-white rounded p-6 mb-10 flex flex-col md:flex-row gap-6">
+        {{-- Tabel Statistik dengan Header NILAI IKM --}}
+        <div class="w-full md:w-full">
+            <table class="w-full border border-gray-400 text-sm text-gray-800">
+                <thead>
+                    <tr class="bg-[#003366] text-white">
+                        <th colspan="3" class="text-center text-lg font-bold py-3">NILAI IKM</th>
+                    </tr>
+                    <tr class="bg-gray-100 text-center font-semibold">
+                        <th class="border px-2 py-1 w-1/3">Kategori</th>
+                        <th class="border px-2 py-1 w-1/3">Keterangan</th>
+                        <th class="border px-2 py-1 w-1/3">Nilai</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border px-2 py-1">Nilai IKM</td>
+                        <td class="border px-2 py-1 text-center font-bold">Total</td>
+                        <td class="border px-2 py-1 text-center text-xl font-extrabold">{{ $nilaiIKM }}</td>
+                    </tr>
+                    <tr>
+                        <td class="border px-2 py-1">Jumlah Responden</td>
+                        <td class="border px-2 py-1">Responden</td>
+                        <td class="border px-2 py-1 text-center">{{ $jumlahResponden }} orang</td>
+                    </tr>
+                    <tr>
+                        <td class="border px-2 py-1" rowspan="2">Jenis Kelamin</td>
+                        <td class="border px-2 py-1">Perempuan</td>
+                        <td class="border px-2 py-1 text-center">{{ $wanita }} orang</td>
+                    </tr>
+                    <tr>
+                        <td class="border px-2 py-1">Laki-laki</td>
+                        <td class="border px-2 py-1 text-center">{{ $pria }} orang</td>
+                    </tr>
+                    <tr>
+                        <td class="border px-2 py-1" rowspan="4">Pendidikan</td>
+                        <td class="border px-2 py-1">SMA/SMK Sederajat</td>
+                        <td class="border px-2 py-1 text-center">{{ $pendidikan['SMA_SMK'] ?? 0 }} orang</td>
+                    </tr>
+                    <tr>
+                        <td class="border px-2 py-1">D1 D2 D3</td>
+                        <td class="border px-2 py-1 text-center">{{ $pendidikan['D1-D3'] ?? 0 }} orang</td>
+                    </tr>
+                    <tr>
+                        <td class="border px-2 py-1">D4 S1</td>
+                        <td class="border px-2 py-1 text-center">{{ $pendidikan['D4-S1'] ?? 0 }} orang</td>
+                    </tr>
+                    <tr>
+                        <td class="border px-2 py-1">S2 S3</td>
+                        <td class="border px-2 py-1 text-center">{{ $pendidikan['S2-S3'] ?? 0 }} orang</td>
+                    </tr>
+                    <tr>
+                        <td class="border px-2 py-1">Periode Survei</td>
+                        <td class="border px-2 py-1">Rentang</td>
+                        <td class="border px-2 py-1 text-center">{{ $periode['awal'] }} – {{ $periode['akhir'] }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     {{-- GRAFIK PENGADUAN --}}
     <div class="mb-4">
         <div class="card">

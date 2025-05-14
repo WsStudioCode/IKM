@@ -22,10 +22,10 @@ class MasyarakatDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addIndexColumn()
             ->editColumn('tanggal_mengisi', function ($row) {
-                return Carbon::parse($row->tanggal_mengisi)->translatedFormat('d F Y H:i');
+                return Carbon::parse($row->tanggal_mengisi)->translatedFormat('d F Y');
             })
-            ->editColumn('created_at', fn($row) => Carbon::parse($row->created_at)->translatedFormat('d F Y H:i'))
-            ->editColumn('updated_at', fn($row) => Carbon::parse($row->updated_at)->translatedFormat('d F Y H:i'))
+            ->editColumn('created_at', fn($row) => Carbon::parse($row->created_at)->translatedFormat('d F Y'))
+            ->editColumn('updated_at', fn($row) => Carbon::parse($row->updated_at)->translatedFormat('d F Y'))
             ->addColumn('action', function ($row) {
                 return view('admin.masyarakat.partials.actions', compact('row'))->render();
             })
@@ -49,28 +49,28 @@ class MasyarakatDataTable extends DataTable
             ->setTableId('masyarakat-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->dom('Bfrtip')
+            // ->dom('Bfrtip')
             ->scrollX(true)
             ->orderBy(1)
-            ->selectStyleSingle()
-            ->buttons([
-                [
-                    'extend' => 'excel',
-                    'text' => '<i class="fas fa-file-excel"></i>',
-                    'className' => 'btn btn-md me-2',
-                ],
-                [
-                    'extend' => 'pdf',
-                    'text' => '<i class="fas fa-file-pdf"></i>',
-                    'className' => 'btn btn-md me-2',
-                ],
+            ->selectStyleSingle();
+        // ->buttons([
+        //     [
+        //         'extend' => 'excel',
+        //         'text' => '<i class="fas fa-file-excel"></i>',
+        //         'className' => 'btn btn-md me-2',
+        //     ],
+        //     [
+        //         'extend' => 'pdf',
+        //         'text' => '<i class="fas fa-file-pdf"></i>',
+        //         'className' => 'btn btn-md me-2',
+        //     ],
 
-                [
-                    'text' => '<i class="fas fa-sync-alt"></i>',
-                    'className' => 'btn btn-md',
-                    'action' => 'function ( e, dt, node, config ) { dt.ajax.reload(); }',
-                ],
-            ]);
+        //     [
+        //         'text' => '<i class="fas fa-sync-alt"></i>',
+        //         'className' => 'btn btn-md',
+        //         'action' => 'function ( e, dt, node, config ) { dt.ajax.reload(); }',
+        //     ],
+        // ]);
     }
 
     /**

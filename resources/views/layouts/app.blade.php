@@ -5,7 +5,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Indeks Kepuasan Masyarakat') }}</title>
+    <link rel="icon" href="{{ asset('logo2.png') }}">
 
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -124,7 +125,7 @@
         <div class="sidebar-header">
             <div class="sidebar-brand">
                 <a href="{{ route('dashboard') }}" class="text-decoration-none text-dark d-flex align-items-center">
-                    <img src="{{ asset('logo.png') }}" alt="Logo" class="w-auto h-16">
+                    <img src="{{ asset('logo2.png') }}" alt="Logo" class="w-auto h-20">
                 </a>
             </div>
         </div>
@@ -178,11 +179,11 @@
         </ul>
 
         {{-- Sidebar Footer --}}
-        <div class="sidebar-footer border-top d-flex justify-content-center py-2">
+        {{-- <div class="sidebar-footer border-top d-flex justify-content-center py-2">
             <button class="sidebar-toggler" type="button" id="sidebarToggler">
 
             </button>
-        </div>
+        </div> --}}
     </div>
 
     {{-- Navbar --}}

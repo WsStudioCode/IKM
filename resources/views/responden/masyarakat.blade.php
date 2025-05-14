@@ -10,51 +10,53 @@
 <body class="bg-gray-100 min-h-screen font-sans">
 
     {{-- Navbar --}}
-    <nav class="bg-red-700 text-white shadow mb-6">
+    <nav class="bg-[#003366] text-white shadow mb-6">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold">IKM - Indeks Kepuasan Masyarakat</h1>
+            <div class="flex items-center gap-4">
+                <img src="{{ asset('logo2.png') }}" alt="Logo" class="w-auto h-12">
+                <h1 class="text-2xl font-bold whitespace-nowrap">IKM - Indeks Kepuasan Masyarakat</h1>
+            </div>
             <a href="{{ url('/login') }}"
-                class="bg-white text-red-700 px-4 py-1 rounded hover:bg-gray-100 transition font-medium text-sm">Login
+                class="bg-white text-[#003366] px-4 py-1 rounded hover:bg-gray-100 transition font-medium text-sm">Login
                 Admin</a>
         </div>
     </nav>
 
+
     <div class="max-w-6xl mx-auto px-6">
         <div class="bg-white p-6 rounded shadow mb-8">
-            <h2 class="text-2xl font-semibold text-red-700 mb-2">Selamat Datang di Layanan Masyarakat</h2>
+            <h2 class="text-2xl font-semibold text-[#003366] mb-2">Selamat Datang di Layanan Masyarakat</h2>
             <p class="text-gray-600">Silakan pilih menu berikut untuk melanjutkan.</p>
         </div>
 
         {{-- Menu --}}
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            {{-- Kuesioner --}}
             <a href="{{ route('kuesioner.form') }}"
-                class="bg-red-600 text-white p-6 rounded shadow hover:bg-red-700 transition text-center">
+                class="bg-[#004c99] text-white p-6 rounded shadow hover:bg-[#0066cc] transition text-center">
                 <h3 class="text-lg font-semibold">Kuesioner</h3>
                 <p class="text-sm mt-2">Isi kuesioner pelayanan publik</p>
             </a>
 
-            {{-- Pengaduan --}}
             <a href="{{ route('pengaduan.form') }}"
-                class="bg-red-600 text-white p-6 rounded shadow hover:bg-red-700 transition text-center">
+                class="bg-[#004c99] text-white p-6 rounded shadow hover:bg-[#0066cc] transition text-center">
                 <h3 class="text-lg font-semibold">Pengaduan</h3>
                 <p class="text-sm mt-2">Sampaikan pengaduan Anda</p>
             </a>
 
-            {{-- Forum / Tindak Lanjut --}}
             <a href="#tindak-lanjut"
-                class="bg-red-600 text-white p-6 rounded shadow hover:bg-red-700 transition text-center">
+                class="bg-[#004c99] text-white p-6 rounded shadow hover:bg-[#0066cc] transition text-center">
                 <h3 class="text-lg font-semibold">Tindak Lanjut</h3>
                 <p class="text-sm mt-2">Lihat status dan tanggapan</p>
             </a>
         </div>
+
 
         <div class="bg-white rounded shadow p-6 mb-10 flex flex-col md:flex-row gap-6">
             {{-- Tabel Statistik dengan Header NILAI IKM --}}
             <div class="w-full md:w-full">
                 <table class="w-full border border-gray-400 text-sm text-gray-800">
                     <thead>
-                        <tr class="bg-blue-800 text-white">
+                        <tr class="bg-[#003366] text-white">
                             <th colspan="3" class="text-center text-lg font-bold py-3">NILAI IKM</th>
                         </tr>
                         <tr class="bg-gray-100 text-center font-semibold">
@@ -246,12 +248,13 @@
 
     </div>
 
-    <footer class="bg-red-700 text-white mt-16">
+    <footer class="bg-[#003366] text-white mt-16">
         <div class="max-w-7xl mx-auto px-6 py-8 text-center">
-            <p class="text-sm font-semibold">© {{ date('Y') }} Pemerintah Kota</p>
+            <p class="text-sm font-semibold">© {{ date('Y') }} Pemerintah Kota Makasar</p>
             <p class="text-xs mt-1">Sistem Informasi Pengaduan dan Indeks Kepuasan Masyarakat</p>
         </div>
     </footer>
+
 
 
 </body>

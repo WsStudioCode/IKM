@@ -25,7 +25,7 @@ class PengaduanDataTable extends DataTable
             ->addColumn('nama_masyarakat', fn($row) => $row->masyarakat->nama ?? '-')
             ->addColumn('tanggapan', fn($row) => $row->tindakLanjut->tanggapan ?? '-')
             ->editColumn('created_at', function ($row) {
-                return Carbon::parse($row->created_at)->translatedFormat('d F Y H:i');
+                return Carbon::parse($row->created_at)->translatedFormat('d F Y');
             })
             ->addColumn('action', function ($row) {
                 return view('admin.pengaduan.partials.actions', compact('row'))->render();
@@ -38,7 +38,21 @@ class PengaduanDataTable extends DataTable
      */
     public function query(Pengaduan $model): QueryBuilder
     {
-        return $model->newQuery()->with(['masyarakat', 'tindakLanjut']);
+        $query = $model->newQuery()->with(['masyarakat', 'tindakLanjut']);
+
+        if ($tahun = request('tahun')) {
+            $query->whereYear('created_at', $tahun);
+        }
+        if ($search = request('search_custom')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('status', 'like', "%{$search}%")
+                    ->orWhereHas('masyarakat', function ($q2) use ($search) {
+                        $q2->where('nama', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        return $query;
     }
 
     /**
@@ -50,28 +64,9 @@ class PengaduanDataTable extends DataTable
             ->setTableId('pengaduan-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->dom('Bfrtip')
-            ->orderBy(1)
-            ->selectStyleSingle()
+            ->dom('t<"d-flex justify-content-between align-items-center"lip>')
             ->scrollX(true)
-            ->buttons([
-                [
-                    'extend' => 'excel',
-                    'text' => '<i class="fas fa-file-excel"></i>',
-                    'className' => 'btn btn-md me-2',
-                ],
-                [
-                    'extend' => 'pdf',
-                    'text' => '<i class="fas fa-file-pdf"></i>',
-                    'className' => 'btn btn-md me-2',
-                ],
-
-                [
-                    'text' => '<i class="fas fa-sync-alt"></i>',
-                    'className' => 'btn btn-md',
-                    'action' => 'function ( e, dt, node, config ) { dt.ajax.reload(); }',
-                ],
-            ]);
+            ->orderBy(1);
     }
 
     /**

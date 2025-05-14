@@ -9,6 +9,7 @@ use App\Models\KategoriPertanyaan;
 use App\Models\HasilKuesioner;
 use App\Models\Pengaduan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 use Maatwebsite\Excel\Facades\Excel;
 
 class AdminController extends Controller
@@ -73,6 +74,46 @@ class AdminController extends Controller
 
         $hasilKuesioner = $queryKepuasan->latest('tanggal_isi')->paginate(10);
 
+        $query = Pengaduan::with(['masyarakat', 'tindakLanjut'])->withCount('komentar');
+
+        if ($request->filled('q')) {
+            $query->where('isi', 'like', '%' . $request->input('q') . '%');
+        }
+
+        $pengaduan = $query->latest()->paginate(5);
+
+        $pelaporTerbaru = Pengaduan::with('masyarakat')
+            ->latest()
+            ->take(8)
+            ->get()
+            ->pluck('masyarakat')
+            ->unique('id')
+            ->values();
+
+        $laporanSukses = Pengaduan::where('status', 'Selesai')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        $kuesioner = HasilKuesioner::with('masyarakat')->get();
+
+        $nilaiIKM = round($kuesioner->avg('nilai_rata_rata'), 2);
+        $jumlahResponden = $kuesioner->count();
+        $pria = $kuesioner->where('masyarakat.jenis_kelamin', 'Laki-laki')->count();
+        $wanita = $kuesioner->where('masyarakat.jenis_kelamin', 'Perempuan')->count();
+
+        $pendidikan = [
+            'SMA_SMK' => $kuesioner->filter(fn($k) => str_contains($k->masyarakat->pendidikan->value ?? '', 'SMA'))->count(),
+            'D1-D3' => $kuesioner->filter(fn($k) => in_array($k->masyarakat->pendidikan->value ?? '', ['D1', 'D2', 'D3']))->count(),
+            'D4-S1' => $kuesioner->filter(fn($k) => in_array($k->masyarakat->pendidikan->value ?? '', ['D4', 'S1']))->count(),
+            'S2-S3' => $kuesioner->filter(fn($k) => in_array($k->masyarakat->pendidikan->value ?? '', ['S2', 'S3']))->count(),
+        ];
+
+        $periode = [
+            'awal' => optional($kuesioner->min('tanggal_isi'))->format('d M Y'),
+            'akhir' => optional($kuesioner->max('tanggal_isi'))->format('d M Y'),
+        ];
+
         return view('dashboard', [
             'totalMasyarakat' => $totalMasyarakat,
             'totalPertanyaan' => $totalPertanyaan,
@@ -94,32 +135,15 @@ class AdminController extends Controller
             'jumlahDiproses' => $jumlahDiproses,
             'jumlahSelesai' => $jumlahSelesai,
             'grafikPengaduan' => $grafikPengaduan,
+            'pengaduan' => $pengaduan,
+            'pelaporTerbaru' => $pelaporTerbaru,
+            'laporanSukses' => $laporanSukses,
+            'nilaiIKM' => $nilaiIKM,
+            'jumlahResponden' => $jumlahResponden,
+            'pria' => $pria,
+            'wanita' => $wanita,
+            'pendidikan' => $pendidikan,
+            'periode' => $periode,
         ]);
     }
-
-    // public function exportKepuasan(Request $request)
-    // {
-    //     $tahun = $request->input('tahun', now()->year);
-    //     $periode = $request->input('periode', 12);
-
-    //     $query = HasilKuesioner::select('tanggal_isi', 'kategori_hasil', 'masyarakat_id')
-    //         ->whereYear('tanggal_isi', $tahun);
-
-    //     if ($periode == 3) {
-    //         $query->where('tanggal_isi', '>=', now()->subMonths(3));
-    //     } elseif ($periode == 6) {
-    //         $query->where('tanggal_isi', '>=', now()->subMonths(6));
-    //     }
-
-    //     $data = $query->get()->map(function ($item) {
-    //         return [
-    //             'Tanggal' => $item->tanggal_isi->format('d-m-Y'),
-    //             'Kategori Hasil' => $item->kategori_hasil,
-    //             'Masyarakat ID' => $item->masyarakat_id,
-    //         ];
-    //     });
-
-    //     $filename = 'rekap_kepuasan_' . $periode . '_bulan.xlsx';
-    //     return Excel::download(new ArrayExport($data->toArray()), $filename);
-    // }
 }

@@ -22,10 +22,10 @@ class PertanyaanDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addIndexColumn()
             ->editColumn('created_at', function ($row) {
-                return Carbon::parse($row->created_at)->translatedFormat('d F Y H:i');
+                return Carbon::parse($row->created_at)->translatedFormat('d F Y');
             })
             ->editColumn('updated_at', function ($row) {
-                return Carbon::parse($row->updated_at)->translatedFormat('d F Y H:i');
+                return Carbon::parse($row->updated_at)->translatedFormat('d F Y');
             })
             ->addColumn('action', function ($row) {
                 return view('admin.pertanyaan.partials.actions', compact('row'))->render();
@@ -54,28 +54,9 @@ class PertanyaanDataTable extends DataTable
             ->setTableId('pertanyaan-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->dom('Bfrtip')
             ->orderBy(1)
             ->selectStyleSingle()
-            ->scrollX(true)
-            ->buttons([
-                [
-                    'extend' => 'excel',
-                    'text' => '<i class="fas fa-file-excel"></i>',
-                    'className' => 'btn btn-md me-2',
-                ],
-                [
-                    'extend' => 'pdf',
-                    'text' => '<i class="fas fa-file-pdf"></i>',
-                    'className' => 'btn btn-md me-2',
-                ],
-
-                [
-                    'text' => '<i class="fas fa-sync-alt"></i>',
-                    'className' => 'btn btn-md',
-                    'action' => 'function ( e, dt, node, config ) { dt.ajax.reload(); }',
-                ],
-            ]);
+            ->scrollX(true);
     }
 
     /**

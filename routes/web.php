@@ -131,6 +131,10 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::put('/pengaduan/{pengaduan}', [PengaduanController::class, 'update'])->name('pengaduan.update');
     Route::delete('/pengaduan/{pengaduan}', [PengaduanController::class, 'destroy'])->name('pengaduan.destroy');
 
+    Route::get('/pengaduan/export/pdf', [PengaduanController::class, 'exportPDF'])->name('pengaduan.export.pdf');
+    Route::get('/pengaduan/export/excel', [PengaduanController::class, 'exportExcel'])->name('pengaduan.export.excel');
+
+
     // tindak lanjut
     Route::post('/pengaduan/{pengaduan}/tanggapan', [TindakLanjutController::class, 'storeTanggapan'])->name('tindak-lanjut.tanggapan.store');
     Route::put('/pengaduan/{pengaduan}/tanggapan', [TindakLanjutController::class, 'updateTanggapan'])->name('tindak-lanjut.tanggapan.update');

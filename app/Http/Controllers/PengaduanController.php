@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\PengaduanDataTable;
+use App\Exports\PengaduanExport;
 use App\Models\Masyarakat;
 use App\Models\Pengaduan;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PengaduanController extends Controller
 {
@@ -134,5 +137,40 @@ class PengaduanController extends Controller
         ]);
 
         return redirect()->route('responden.masyarakat')->with('success', 'Pengaduan berhasil dikirim! Menunggu tindak lanjut.');
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $tahun = $request->get('tahun', now()->year);
+        $search = $request->get('search');
+        $tanggal = now()->format('Y-m-d_H-i-s');
+
+        $filename = "Laporan_Pengaduan_{$tanggal}.xlsx";
+        return Excel::download(new PengaduanExport($tahun, $search), $filename);
+    }
+
+    public function exportPDF(Request $request)
+    {
+        $tahun = $request->get('tahun', now()->year);
+        $search = $request->get('search');
+
+        $query = \App\Models\Pengaduan::with('masyarakat')
+            ->whereYear('created_at', $tahun);
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('status', 'like', "%{$search}%")
+                    ->orWhereHas('masyarakat', function ($q2) use ($search) {
+                        $q2->where('nama', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        $data = $query->get();
+
+        $pdf = Pdf::loadView('admin.pengaduan.export-pdf', compact('data', 'tahun'))
+            ->setPaper('A4', 'landscape');
+
+        return $pdf->download('Laporan_Pengaduan_' . now()->format('Ymd_His') . '.pdf');
     }
 }

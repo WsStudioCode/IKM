@@ -12,7 +12,7 @@
 
     <div class="w-full max-w-md bg-white rounded-lg shadow-md p-8">
         <div class="flex justify-center mb-6">
-            <img src="{{ asset('logo.png') }}" alt="Logo" class="h-20 w-auto">
+            <img src="{{ asset('logo2.png') }}" alt="Logo" class="h-24 w-auto">
         </div>
 
         <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Login</h2>

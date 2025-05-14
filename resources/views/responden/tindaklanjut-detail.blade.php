@@ -10,11 +10,14 @@
 <body class="bg-gray-100 min-h-screen">
 
     {{-- Navbar --}}
-    <nav class="bg-white shadow mb-6">
+    <nav class="bg-[#003366] text-white shadow mb-6">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="text-xl font-bold text-gray-800">Detail Pengaduan</h1>
-            <a href="{{ route('tindak-lanjut.index') }}" class="text-red-600 hover:underline font-medium">← Kembali ke
-                Forum</a>
+            <div class="flex items-center gap-4">
+                <img src="{{ asset('logo2.png') }}" alt="Logo" class="w-auto h-12">
+                <h1 class="text-2xl font-bold whitespace-nowrap">IKM - Indeks Kepuasan Masyarakat</h1>
+            </div>
+            <a href="{{ url('/') }}"
+                class="bg-white text-[#003366] px-4 py-1 rounded hover:bg-gray-100 transition font-medium text-sm">Beranda</a>
         </div>
     </nav>
 
