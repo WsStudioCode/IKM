@@ -31,9 +31,12 @@ class MasyarakatController extends Controller
             'no_telp' => 'required|string|max:20',
         ]);
 
+        $validated['no_telp'] = preg_replace('/^0/', '62', $validated['no_telp']);
+
         $masyarakat = Masyarakat::create($validated);
 
         session(['masyarakat_id' => $masyarakat->id]);
+        session(['masyarakat_name' => $masyarakat->nama]);
 
         return redirect()->route('responden.masyarakat')->with('success', 'Data masyarakat berhasil disimpan!');
     }

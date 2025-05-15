@@ -32,6 +32,7 @@
             </div>
         @endif
 
+
         <form action="{{ route('pengaduan.store') }}" method="POST" enctype="multipart/form-data">
             @if ($errors->any())
                 <div id="error-alert" class="bg-red-100 text-red-700 p-4 rounded mb-4 transition-opacity duration-500">
@@ -81,6 +82,7 @@
                     class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">Kirim
                     Pengaduan</button>
             </div>
+
         </form>
     </div>
 

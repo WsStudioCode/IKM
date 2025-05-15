@@ -6,8 +6,11 @@ use App\DataTables\PengaduanDataTable;
 use App\Exports\PengaduanExport;
 use App\Models\Masyarakat;
 use App\Models\Pengaduan;
+use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 
 class PengaduanController extends Controller
@@ -92,13 +95,6 @@ class PengaduanController extends Controller
             'status' => $request->status,
         ]);
 
-        if ($request->filled('tanggapan')) {
-            $pengaduan->tindakLanjut()->updateOrCreate(
-                ['pengaduan_id' => $pengaduan->id],
-                ['tanggapan' => $request->tanggapan, 'tanggal_tindak_lanjut' => now(), 'gambar' => $path]
-            );
-        }
-
         return redirect()->route('pengaduan.index')->with('success', 'Pengaduan & tindak lanjut berhasil diperbarui.');
     }
 
@@ -136,7 +132,29 @@ class PengaduanController extends Controller
             'status' => 'Menunggu',
         ]);
 
-        return redirect()->route('responden.masyarakat')->with('success', 'Pengaduan berhasil dikirim! Menunggu tindak lanjut.');
+        $admin = \App\Models\User::first();
+
+        if ($admin && $admin->phone) {
+            $gambarUrl = $path ? asset('storage/' . $path) : null;
+
+            $pesanText = "Pengaduan Baru Dari Masyarakat\n"
+                . "Nama: " . session('masyarakat_name') . "\n"
+                . "Isi: " . $request->isi;
+
+            if ($gambarUrl) {
+                $pesanText .= "\n📎 Gambar: $gambarUrl";
+            }
+
+            $pesan = urlencode($pesanText);
+            $linkWa = "https://wa.me/{$admin->phone}?text={$pesan}";
+        } else {
+            $linkWa = null;
+        }
+
+        return redirect()->route('responden.masyarakat')->with([
+            'success' => 'Pengaduan berhasil dikirim! Menunggu tindak lanjut.',
+            'wa_link' => $linkWa
+        ]);
     }
 
     public function exportExcel(Request $request)

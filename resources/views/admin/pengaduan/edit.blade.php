@@ -48,28 +48,6 @@
                     </select>
                 </div>
 
-                <div class="mb-4">
-                    <label for="tanggapan" class="form-label">Tanggapan Admin</label>
-                    <textarea name="tanggapan" id="tanggapan" class="form-control" rows="3">{{ old('tanggapan', $pengaduan->tindakLanjut->tanggapan ?? '') }}</textarea>
-                </div>
-
-                <div class="mb-4">
-                    <label for="gambar" class="block text-sm font-medium text-gray-700 mb-1">Lampiran Gambar
-                        (Opsional)</label>
-                    <input type="file" name="gambar" id="gambar"
-                        class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring focus:border-blue-500"
-                        accept="image/*">
-                    @error('gambar')
-                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
-                    @enderror
-
-                    {{-- Preview --}}
-                    <div class="mt-4">
-                        <img id="preview-gambar" src="#" alt="Preview Gambar"
-                            class="hidden w-48 rounded border border-gray-300">
-                    </div>
-                </div>
-
                 <div class="d-flex justify-content-end gap-2">
                     <a href="{{ route('pengaduan.index') }}" class="btn btn-secondary">Batal</a>
                     <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
@@ -77,24 +55,4 @@
             </form>
         </div>
     </div>
-
-
-    <script>
-        document.getElementById('gambar').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            const preview = document.getElementById('preview-gambar');
-
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.classList.remove('hidden');
-                };
-                reader.readAsDataURL(file);
-            } else {
-                preview.src = '#';
-                preview.classList.add('hidden');
-            }
-        });
-    </script>
 @endsection

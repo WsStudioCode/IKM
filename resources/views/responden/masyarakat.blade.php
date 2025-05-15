@@ -257,6 +257,25 @@
     </footer>
 
 
+    @if (!empty($waLink))
+        <div id="wa-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md text-center">
+                <h2 class="text-xl font-semibold mb-4 text-gray-800">Notifikasi WhatsApp</h2>
+                <p class="text-gray-700 mb-6">Ingin mengirim pengaduan ini langsung ke WhatsApp Admin?</p>
+                <div class="flex justify-center gap-4">
+                    <a href="{{ $waLink }}" target="_blank"
+                        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
+                        Kirim Pengaduan via WhatsApp
+                    </a>
+                    <button onclick="document.getElementById('wa-modal').classList.add('hidden')"
+                        class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
+
 
 </body>
 

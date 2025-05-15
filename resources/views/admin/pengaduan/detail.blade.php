@@ -49,10 +49,37 @@
                         </div>
                         <p>{{ $tanggapan }}</p>
 
+                        @php
+                            $masyarakat = $pengaduan->masyarakat;
+                            $gambarUrl = !empty($gambarList[$index]) ? asset('storage/' . $gambarList[$index]) : null;
+                            $nomor = $masyarakat->no_telp ?? null;
+
+                            $pesan =
+                                "Halo {$masyarakat->nama},\n\n" .
+                                "Menanggapi laporan Anda:\n\"{$pengaduan->isi}\"\n\n" .
+                                "Tanggapan kami:\n\"{$tanggapan}\"";
+
+                            if ($gambarUrl) {
+                                $pesan .= "\n\n📎 Gambar Tanggapan:\n" . $gambarUrl;
+                            }
+
+                            $linkWa = $nomor ? 'https://wa.me/' . $nomor . '?text=' . urlencode($pesan) : null;
+                        @endphp
+
+                        @if ($linkWa)
+                            <a href="{{ $linkWa }}" target="_blank"
+                                class="d-inline-flex align-items-center gap-2 px-3 py-2 mt-2"
+                                style="background-color: #25D366; color: white; border-radius: 6px; text-decoration: none; font-weight: 500; transition: all 0.2s ease-in-out;">
+                                <i class="fab fa-whatsapp fa-lg"></i>
+                                Kirim via WhatsApp
+                            </a>
+                        @endif
+
                         @if (!empty($gambarList[$index]))
                             <img src="{{ asset('storage/' . $gambarList[$index]) }}" alt="Gambar Tanggapan"
-                                class="img-thumbnail" style="max-width: 250px;">
+                                class="img-thumbnail mt-3" style="max-width: 250px;">
                         @endif
+
                     </div>
                 </div>
             @endforeach
@@ -68,7 +95,7 @@
         {{-- Form Tanggapan --}}
         <div id="form-tanggapan" class="card d-none">
             <div class="card-body">
-                <form action="{{ route('tindak-lanjut.tanggapan.store', $pengaduan->id) }}" method="POST"
+                <form action="{{ route('tindak-lanjut.tanggapan.update', $pengaduan->id) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')

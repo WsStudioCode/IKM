@@ -72,7 +72,8 @@ Route::get('/', function (Request $request) {
         'awal' => optional($kuesioner->min('tanggal_isi'))->format('d M Y'),
         'akhir' => optional($kuesioner->max('tanggal_isi'))->format('d M Y'),
     ];
-    return view('responden.masyarakat', compact('pengaduan', 'pelaporTerbaru', 'laporanSukses', 'nilaiIKM', 'jumlahResponden', 'pria', 'wanita', 'pendidikan', 'periode'));
+    $waLink = session('wa_link');
+    return view('responden.masyarakat', compact('pengaduan', 'pelaporTerbaru', 'laporanSukses', 'nilaiIKM', 'jumlahResponden', 'pria', 'wanita', 'pendidikan', 'periode', 'waLink'));
 })->name('responden.masyarakat');
 
 Route::get('/masyarakat/form-registrasi', [MasyarakatController::class, 'create'])->name('masyarakat.form');
@@ -136,7 +137,6 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 
 
     // tindak lanjut
-    Route::post('/pengaduan/{pengaduan}/tanggapan', [TindakLanjutController::class, 'storeTanggapan'])->name('tindak-lanjut.tanggapan.store');
     Route::put('/pengaduan/{pengaduan}/tanggapan', [TindakLanjutController::class, 'updateTanggapan'])->name('tindak-lanjut.tanggapan.update');
 
 
