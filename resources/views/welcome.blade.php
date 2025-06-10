@@ -17,7 +17,7 @@
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-4">
                 <img src="{{ asset('logo2.png') }}" alt="Logo" class="w-auto h-12">
-                <h1 class="text-2xl font-bold whitespace-nowrap">IKM - Indeks Kepuasan Masyarakat</h1>
+                <h1 class="text-2xl font-bold whitespace-nowrap">E-SKM PKB Kota Makassar</h1>
             </div>
             <a href="{{ url('/') }}"
                 class="bg-white text-[#003366] px-4 py-1 rounded hover:bg-gray-100 transition font-medium text-sm">Beranda</a>
@@ -87,7 +87,7 @@
                 <input type="text" name="pekerjaan" class="w-full mt-1 p-2 border border-gray-300 rounded" required>
             </div>
 
-            <div>
+            {{-- <div>
                 <label class="block text-sm font-medium text-gray-700">Agama</label>
                 <select name="agama" class="w-full mt-1 p-2 border border-gray-300 rounded" required>
                     <option value="Hindu">Hindu</option>
@@ -97,7 +97,19 @@
                     <option value="Budha">Budha</option>
                     <option value="Konghucu">Konghucu</option>
                 </select>
+            </div> --}}
+            <div style="display: none;">
+                <label class="block text-sm font-medium text-gray-700">Agama</label>
+                <select name="agama" class="w-full mt-1 p-2 border border-gray-300 rounded" required>
+                    <option value="Hindu" selected>Hindu</option>
+                    <option value="Islam">Islam</option>
+                    <option value="Kristen">Kristen</option>
+                    <option value="Katolik">Katolik</option>
+                    <option value="Budha">Budha</option>
+                    <option value="Konghucu">Konghucu</option>
+                </select>
             </div>
+
 
             <div class="md:col-span-2">
                 <label class="block text-sm font-medium text-gray-700">Alamat</label>
@@ -109,9 +121,15 @@
                 <input type="text" name="no_telp" class="w-full mt-1 p-2 border border-gray-300 rounded" required>
             </div>
 
-            <div class="md:col-span-2 text-right mt-4">
+            <div class="md:col-span-2 flex justify-between items-center mt-4">
+                <a href="{{ url('/') }}"
+                    class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-red-700 transition">
+                    Back
+                </a>
                 <button type="submit"
-                    class="bg-green-600 text-white px-6 py-2 rounded hover:bg-red-700 transition">Kirim</button>
+                    class="bg-green-600 text-white px-6 py-2 rounded hover:bg-red-700 transition">
+                    Kirim
+                </button>
             </div>
         </form>
     </div>

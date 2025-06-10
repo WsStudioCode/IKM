@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "022f2388bdf0b136eefc9cb1b88f6128",
+    "content-hash": "e64c82c2dc592f4bb67ec0e9c24045f2",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -3188,7 +3188,13 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/c80041b1628c4f18030407134fe88303661d4e4e",
                 "reference": "c80041b1628c4f18030407134fe88303661d4e4e",
-                "shasum": ""
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
             },
             "require": {
                 "composer/pcre": "^1||^2||^3",
