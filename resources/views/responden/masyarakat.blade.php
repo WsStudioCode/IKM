@@ -6,16 +6,30 @@
     <title>{{ config('app.name', 'Indeks Kepuasan Masyarakat') }}</title>
     <link rel="icon" href="{{ asset('logo2.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+    html {
+        scroll-behavior: smooth;
+    }
+</style>
 </head>
 
 <body class="bg-gray-100 min-h-screen font-sans">
+
+    {{-- <!-- Splash Screen -->
+    <div id="splash-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-white transition-opacity duration-500" >
+        <div class="text-center">
+            <img src="{{ asset('logo2.png') }}" alt="Logo" class="mx-auto animate-pulse">
+            <h2 class="text-xl mt-4 font-semibold text-[#003366]">Memuat Aplikasi...</h2>
+        </div>
+    </div> --}}
 
     {{-- Navbar --}}
     <nav class="bg-[#003366] text-white shadow mb-6">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-4">
                 <img src="{{ asset('logo2.png') }}" alt="Logo" class="w-auto h-12">
-                <h1 class="text-2xl font-bold whitespace-nowrap">IKM - Indeks Kepuasan Masyarakat</h1>
+                <h1 class="text-2xl font-bold whitespace-nowrap">E-SKM PKB Kota Makassar</h1>
             </div>
             <a href="{{ url('/login') }}"
                 class="bg-white text-[#003366] px-4 py-1 rounded hover:bg-gray-100 transition font-medium text-sm">Login
@@ -256,6 +270,29 @@
         </div>
     </footer>
 
+{{-- <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const splash = document.getElementById('splash-screen');
+
+        // Check are spalsh screen event already happen
+        const isFirstVisit = sessionStorage.getItem('visited');
+
+        if (!isFirstVisit) {
+            // First Time: view splash screen
+            splash.style.display = 'flex';
+            sessionStorage.setItem('visited', 'true');
+
+            // Disappear splash screen after 2 seconds
+            setTimeout(() => {
+                splash.classList.add('opacity-0');
+                setTimeout(() => splash.style.display = 'none', 500);
+            }, 2000);
+        } else {
+            // Not first visit: hide splash screen
+            splash.style.display = 'none';
+        }
+    });
+</script> --}}
 
     @if (!empty($waLink))
         <div id="wa-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
