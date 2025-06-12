@@ -32,7 +32,12 @@ Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
 });
 
-Route::get('/', function (Request $request) {
+// Halaman utama baru
+Route::get('/', function () {
+    return view('landingpage');
+});
+
+Route::get('/dashboard-responden', function (Request $request) {
     $query = Pengaduan::with(['masyarakat', 'tindakLanjut'])->withCount('komentar');
 
     if ($request->filled('q')) {
