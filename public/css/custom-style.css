@@ -1,0 +1,179 @@
+.custom-modal {
+    background-color: black;
+}
+
+.blok .col-form-label,
+.blok .form-check-label {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+
+.form-subtitle {
+    /* font-size: 24px; */
+    font-weight: bold;
+    color: white;
+}
+
+.custom-modal-title {
+    font-size: 24px;
+}
+
+.custom-modal {
+    text-align: left !important;
+}
+
+.intro {
+    font-family: 'Arial';
+    color: rgb(255, 0, 0);
+    font-size: 25px;
+    text-align: center;
+}
+
+.kop1 {
+    font-size: 27px;
+}
+
+.kop {
+    width: 100%;
+    height: 100px;
+    background: #ffc72c;
+    color: #fff;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.kop2 {
+    font-size: 17px;
+}
+
+.kepuasan-body {
+    font-family: 'Tahoma';
+    background-image: url(../assets/img/9.jpg);
+    color: black;
+}
+
+.kop td {
+    border: 0px solid;
+    font-weight: bold;
+    padding: 0;
+    spacing: 0;
+}
+
+.logo_kop {
+    width: auto;
+    height: 70px;
+    padding: 10px;
+}
+
+.intro2 {
+    font-family: 'Arial';
+    color: black;
+    font-size: 17px;
+    text-align: center;
+}
+
+.tabel_opsi td {
+    border: 0px solid;
+    padding: 0 60px 0 60px;
+}
+
+.overlay {
+    height: 0%;
+    width: 100%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.9);
+    overflow-y: hidden;
+    transition: 0.5s;
+}
+
+.overlay-content {
+    position: relative;
+    top: 15%;
+    width: 100%;
+    text-align: center;
+    margin-top: 30px;
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+}
+
+.saran-body {
+    font-family: 'Tahoma';
+    background-image: url(../assets/img/saran.webp);
+    background-size: cover;
+    color: #fff;
+}
+
+.container {
+
+    color: black;
+}
+
+.survey-modal-body {
+    background-image: url(../assets//img/gradient-black-backgrounds-with-golden-frames_23-2149150610.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+}
+
+.step {
+    width: 60px;
+    height: 55px;
+    border: 1px solid white;
+    color: white;
+    font-weight: bold;
+    font-size: 28px;
+    background-color: rgba(30, 30, 31, 255)
+}
+
+.step-active {
+    border: 1px solid white;
+    background-color: rgba(174, 168, 169, 255);
+}
+
+.strip {
+    width: 50px;
+    height: 0;
+    border: 0.1px solid white;
+    background-color: white;
+}
+
+.btn-survey {
+    color: white;
+    font-weight: bold;
+    background-color: rgba(254, 152, 1, 255);
+}
+
+.radioicon [type=radio]+img {
+    cursor: pointer;
+    width: 128px;
+    height: 128px;
+    -webkit-filter: brightness(1.2) grayscale(.75) opacity(.5);
+    -moz-filter: brightness(1.2) grayscale(.75) opacity(.5);
+    filter: brightness(1.2) grayscale(.75) opacity(.5);
+}
+
+.radioicon [type=radio]+img:hover {
+    -webkit-filter: none;
+    -moz-filter: none;
+    filter: none;
+}
+
+.radioicon [type=radio]:checked+img {
+    filter: none;
+}
+
+.radioicon [type=radio] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}

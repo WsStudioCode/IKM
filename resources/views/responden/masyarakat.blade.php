@@ -37,6 +37,26 @@
         </div>
     </nav>
 
+    <div class="modal fade" id="cmsStatistik" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body bg-dark">
+                    <div class="card w-100">
+                        <div class="card-body">
+                            <div id="polling"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <div class="max-w-6xl mx-auto px-6">
         <div class="bg-white p-6 rounded shadow mb-8">
@@ -48,7 +68,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             <a href="{{ route('kuesioner.form') }}"
                 class="bg-[#004c99] text-white p-6 rounded shadow hover:bg-[#0066cc] transition text-center">
-                <h3 class="text-lg font-semibold">Kuesioner</h3>
+                <h3 class="text-lg font-semibold">Survey</h3>
                 <p class="text-sm mt-2">Isi kuesioner pelayanan publik</p>
             </a>
 
@@ -236,8 +256,8 @@
                                     <div class="text-center">
                                         <img src="{{ asset('icon2.png') }}" class="w-10 h-10 rounded-full mx-auto">
                                         <p class="text-xs truncate">{{ $pelapor->nama ?? 'Noname' }}</p>
-                                        <p class="text-[10px] text-gray-500">
-                                            {{ $pelapor->created_at->format('d/m/Y') }}</p>
+                                        {{-- <p class="text-[10px] text-gray-500">
+                                            {{ $pelapor->created_at->format('d/m/Y') }}</p> --}}
                                     </div>
                                 @endforeach
                             </div>
@@ -270,29 +290,7 @@
         </div>
     </footer>
 
-{{-- <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const splash = document.getElementById('splash-screen');
 
-        // Check are spalsh screen event already happen
-        const isFirstVisit = sessionStorage.getItem('visited');
-
-        if (!isFirstVisit) {
-            // First Time: view splash screen
-            splash.style.display = 'flex';
-            sessionStorage.setItem('visited', 'true');
-
-            // Disappear splash screen after 2 seconds
-            setTimeout(() => {
-                splash.classList.add('opacity-0');
-                setTimeout(() => splash.style.display = 'none', 500);
-            }, 2000);
-        } else {
-            // Not first visit: hide splash screen
-            splash.style.display = 'none';
-        }
-    });
-</script> --}}
 
     @if (!empty($waLink))
         <div id="wa-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">

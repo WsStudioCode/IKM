@@ -25,7 +25,7 @@
 
     <div class="max-w-4xl mx-auto px-6 py-8 bg-white shadow rounded mt-10">
 
-        <h2 class="text-2xl font-bold mb-6">Kuesioner</h2>
+        <h2 class="text-2xl font-bold mb-6">Survey</h2>
 
         <form action="{{ route('kuesioner.submit') }}" method="POST">
             @csrf
