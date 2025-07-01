@@ -18,7 +18,7 @@ class Masyarakat extends Model
         'jenis_kelamin',
         'pendidikan',
         'pekerjaan',
-        'agama',
+        // 'agama',
         'alamat',
         'no_telp',
     ];

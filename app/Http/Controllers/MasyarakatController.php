@@ -26,7 +26,7 @@ class MasyarakatController extends Controller
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
             'pendidikan' => 'required|string|max:100',
             'pekerjaan' => 'required|string|max:100',
-            'agama' => 'required|in:Hindu, Islam, Budha, Katolik, Kristen, Konghucu',
+            // 'agama' => 'required|in:Hindu, Islam, Budha, Katolik, Kristen, Konghucu',
             'alamat' => 'required|string|max:255',
             'no_telp' => 'required|string|max:20',
         ]);

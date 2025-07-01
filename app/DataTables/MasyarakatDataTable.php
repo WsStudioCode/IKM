@@ -88,7 +88,7 @@ class MasyarakatDataTable extends DataTable
             Column::make('jenis_kelamin')->title('Jenis Kelamin'),
             Column::make('pendidikan')->title('Pendidikan'),
             Column::make('pekerjaan')->title('Pekerjaan'),
-            Column::make('agama')->title('Agama'),
+            // Column::make('agama')->title('Agama'),
             Column::make('alamat')->title('Alamat'),
             Column::make('no_telp')->title('No. Telepon'),
             Column::computed('action')

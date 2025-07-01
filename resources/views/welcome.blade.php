@@ -98,7 +98,7 @@
                     <option value="Konghucu">Konghucu</option>
                 </select>
             </div> --}}
-            <div style="display: none;">
+            {{-- <div style="display: none;">
                 <label class="block text-sm font-medium text-gray-700">Agama</label>
                 <select name="agama" class="w-full mt-1 p-2 border border-gray-300 rounded" required>
                     <option value="Hindu" selected>Hindu</option>
@@ -108,7 +108,7 @@
                     <option value="Budha">Budha</option>
                     <option value="Konghucu">Konghucu</option>
                 </select>
-            </div>
+            </div> --}}
 
 
             <div class="md:col-span-2">
