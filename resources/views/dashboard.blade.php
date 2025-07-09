@@ -26,9 +26,9 @@
         @endforeach
     </div>
 
-    <div class="card bg-white rounded p-6 mb-10 flex flex-col md:flex-row gap-6">
+    {{-- <div class="card bg-white rounded p-6 mb-10 flex flex-col md:flex-row gap-6"> --}}
         {{-- Tabel Statistik dengan Header NILAI IKM --}}
-        <div class="w-full md:w-full">
+        {{-- <div class="w-full md:w-full">
             <table class="w-full border border-gray-400 text-sm text-gray-800">
                 <thead>
                     <tr class="bg-[#003366] text-white">
@@ -85,8 +85,8 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
-    </div>
+        </div> --}}
+    {{-- </div> --}}
 
     {{-- GRAFIK PENGADUAN --}}
     <div class="mb-4">

@@ -49,10 +49,12 @@
 
             @csrf
 
-            <div>
+            {{-- <div>
                 <label class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
                 <input type="text" name="nama" class="w-full mt-1 p-2 border border-gray-300 rounded" required>
-            </div>
+            </div> --}}
+
+            <input type="hidden" name="nama" value="Anonim" readonly class="w-full mt-1 p-2 border border-gray-300 rounded" required>
 
             <div>
                 <label class="block text-sm font-medium text-gray-700">Umur</label>
