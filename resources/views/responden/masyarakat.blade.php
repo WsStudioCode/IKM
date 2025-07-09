@@ -6,6 +6,7 @@
     <title>{{ config('app.name', 'Indeks Kepuasan Masyarakat') }}</title>
     <link rel="icon" href="{{ asset('logo2.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
     html {
@@ -161,10 +162,10 @@
                         {{-- Header + Tombol --}}
                         <div class="flex justify-between items-center">
                             <h2 class="text-2xl font-bold text-gray-800">Pengaduan</h2>
-                            <a href="{{ route('pengaduan.form') }}"
+                            {{-- <a href="{{ route('pengaduan.form') }}"
                                 class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition text-sm">
                                 + Buat Pengaduan
-                            </a>
+                            </a> --}}
                         </div>
 
                         {{-- Filter --}}
@@ -290,6 +291,16 @@
         </div>
     </footer>
 
+    @if(session('success'))
+    <script>
+        Swal.fire({
+            title: 'Terima Kasih!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            confirmButtonText: 'Tutup'
+        });
+    </script>
+    @endif
 
 
     @if (!empty($waLink))
@@ -310,7 +321,6 @@
             </div>
         </div>
     @endif
-
 
 </body>
 

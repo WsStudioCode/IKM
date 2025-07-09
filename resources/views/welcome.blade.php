@@ -122,7 +122,7 @@
             </div>
 
             <div class="md:col-span-2 flex justify-between items-center mt-4">
-                <a href="{{ route('responden.masyarakat') }}"
+                <a href="{{ url('/') }}"
                     class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-red-700 transition">
                     Back
                 </a>

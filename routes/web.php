@@ -33,11 +33,11 @@ Route::middleware('guest')->group(function () {
 });
 
 // Halaman utama baru
-Route::get('/', function () {
-    return view('landingpage');
-});
+// Route::get('/', function () {
+//     return view('landingpage');
+// });
 
-Route::get('/dashboard-responden', function (Request $request) {
+Route::get('/', function (Request $request) {
     $query = Pengaduan::with(['masyarakat', 'tindakLanjut'])->withCount('komentar');
 
     if ($request->filled('q')) {
