@@ -6,6 +6,8 @@
     <title>{{ config('app.name', 'Indeks Kepuasan Masyarakat') }}</title>
     <link rel="icon" href="{{ asset('logo2.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/alpinejs" defer></script>
 
     <style>
     html {
@@ -60,9 +62,59 @@
 
     <div class="max-w-6xl mx-auto px-6">
         <div class="bg-white p-6 rounded shadow mb-8">
-            <h2 class="text-2xl font-semibold text-[#003366] mb-2">Selamat Datang di Layanan Masyarakat</h2>
-            <p class="text-gray-600">Silakan pilih menu berikut untuk melanjutkan.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                <!-- Carousel Gambar -->
+                <div x-data="{
+                            currentSlide: 0,
+                            images: [
+                                '{{ asset('assets/img/slider1.webp') }}',
+                                '{{ asset('assets/img/slider2.webp') }}',
+                                // Tambahkan lagi jika diperlukan
+                            ],
+                            startAutoSlide() {
+                                setInterval(() => {
+                                    this.currentSlide = (this.currentSlide + 1) % this.images.length;
+                                }, 5000); // ganti gambar setiap 5 detik
+                            }
+                        }"
+                        x-init="startAutoSlide()"
+                        class="relative w-full max-h-[600px]"
+                    >
+                    
+                    <!-- Gambar Slider -->
+                    <div class="overflow-hidden rounded shadow">
+                        <template x-for="(image, index) in images" :key="index">
+                            <div x-show="currentSlide === index" class="transition-all duration-500">
+                                <img :src="image" alt="Slide"
+                                    class="w-full h-auto max-h-[600px] object-contain mx-auto rounded" />
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- Navigasi -->
+                    <div class="flex justify-center mt-2 space-x-2">
+                        <template x-for="(image, index) in images" :key="index">
+                            <button
+                                class="w-3 h-3 rounded-full"
+                                :class="currentSlide === index ? 'bg-[#003366]' : 'bg-gray-400'"
+                                @click="currentSlide = index">
+                            </button>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Teks Pengantar -->
+                <div class="flex flex-col justify-center h-full">
+                    <h2 class="text-2xl font-semibold text-[#003366] mb-4">Survei Indeks Kepuasan Masyarakat</h2>
+                    <p class="text-gray-600 leading-relaxed text-justify">
+                        Survei Kepuasan Masyarakat <strong>UPTD PKB Kota Makassar</strong> bertujuan mengukur tingkat kepuasan masyarakat terhadap layanan publik, guna mendukung pemantauan peningkatan kualitas dan evaluasi kinerja penyelenggaraan pelayanan publik.
+                        Kami menghargai masukan dan saran Anda. Silakan sampaikan keluhan atau pengalaman Anda melalui formulir di bawah ini, dan tim kami akan segera menindaklanjuti untuk meningkatkan pelayanan kami.
+                        <span class="italic">Seluruh informasi yang Anda berikan akan dijaga kerahasiaannya.</span>
+                    </p>
+                </div>
+            </div>
         </div>
+
 
         {{-- Menu --}}
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
@@ -104,7 +156,7 @@
                         <tr>
                             <td class="border px-2 py-1">Nilai IKM</td>
                             <td class="border px-2 py-1 text-center font-bold">Total</td>
-                            <td class="border px-2 py-1 text-center text-xl font-extrabold">{{ $nilaiIKM }}</td>
+                            <td class="border px-2 py-1 text-center text-xl font-extrabold">{{ $nilaiAkhirIKM }}</td>
                         </tr>
                         <tr>
                             <td class="border px-2 py-1">Jumlah Responden</td>
@@ -161,10 +213,10 @@
                         {{-- Header + Tombol --}}
                         <div class="flex justify-between items-center">
                             <h2 class="text-2xl font-bold text-gray-800">Pengaduan</h2>
-                            <a href="{{ route('pengaduan.form') }}"
+                            {{-- <a href="{{ route('pengaduan.form') }}"
                                 class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition text-sm">
                                 + Buat Pengaduan
-                            </a>
+                            </a> --}}
                         </div>
 
                         {{-- Filter --}}
@@ -290,6 +342,16 @@
         </div>
     </footer>
 
+    @if(session('success'))
+    <script>
+        Swal.fire({
+            title: 'Terima Kasih!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            confirmButtonText: 'Tutup'
+        });
+    </script>
+    @endif
 
 
     @if (!empty($waLink))
@@ -310,7 +372,6 @@
             </div>
         </div>
     @endif
-
 
 </body>
 

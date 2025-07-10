@@ -21,7 +21,7 @@ class MasyarakatController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama' => 'required|string|max:100',
+            // 'nama' => 'required|string|max:100',
             'umur' => 'required|integer|min:1|max:120',
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
             'pendidikan' => 'required|string|max:100',
@@ -33,7 +33,13 @@ class MasyarakatController extends Controller
 
         $validated['no_telp'] = preg_replace('/^0/', '62', $validated['no_telp']);
 
+        // Nama diisi 'Responden' sementara
+        $validated['nama'] = 'Responden';
+
         $masyarakat = Masyarakat::create($validated);
+
+        // Update nama jadi Anonim + ID
+        $masyarakat->update(['nama' => 'Responden' . $masyarakat->id]);
 
         session(['masyarakat_id' => $masyarakat->id]);
         session(['masyarakat_name' => $masyarakat->nama]);
