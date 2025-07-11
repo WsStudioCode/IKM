@@ -159,6 +159,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 
     Route::get('/pengaduan/export/pdf', [PengaduanController::class, 'exportPDF'])->name('pengaduan.export.pdf');
     Route::get('/pengaduan/export/excel', [PengaduanController::class, 'exportExcel'])->name('pengaduan.export.excel');
+    Route::get('/rekap-pertanyaan', [HasilKuesionerController::class, 'rekapPerPertanyaan'])->name('rekap.pertanyaan.index');
 
 
     // tindak lanjut
