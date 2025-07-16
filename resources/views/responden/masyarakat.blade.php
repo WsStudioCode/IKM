@@ -118,13 +118,13 @@
 
         {{-- Menu --}}
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            <a href="{{ route('kuesioner.form') }}"
+            <a href="{{ route('masyarakat.form', ['redirect_to' => route('kuesioner.form')]) }}"
                 class="bg-[#004c99] text-white p-6 rounded shadow hover:bg-[#0066cc] transition text-center">
                 <h3 class="text-lg font-semibold">Survey</h3>
                 <p class="text-sm mt-2">Isi kuesioner pelayanan publik</p>
             </a>
 
-            <a href="{{ route('pengaduan.form') }}"
+            <a href="{{ route('masyarakat.form', ['redirect_to' => route('pengaduan.form')]) }}"
                 class="bg-[#004c99] text-white p-6 rounded shadow hover:bg-[#0066cc] transition text-center">
                 <h3 class="text-lg font-semibold">Pengaduan</h3>
                 <p class="text-sm mt-2">Sampaikan pengaduan Anda</p>

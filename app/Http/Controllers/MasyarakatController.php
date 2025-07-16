@@ -13,8 +13,17 @@ class MasyarakatController extends Controller
         return $datatable->render('admin.masyarakat.index');
     }
 
-    public function create()
+    // public function create()
+    // {
+    //     return view('welcome');
+    // }
+    public function create(Request $request)
     {
+        // Simpan halaman tujuan ke session jika dikirim dari query
+        if ($request->has('redirect_to')) {
+            session(['intended_url' => $request->query('redirect_to')]);
+        }
+
         return view('welcome');
     }
 
@@ -44,6 +53,8 @@ class MasyarakatController extends Controller
         session(['masyarakat_id' => $masyarakat->id]);
         session(['masyarakat_name' => $masyarakat->nama]);
 
-        return redirect()->route('responden.masyarakat')->with('success', 'Data masyarakat berhasil disimpan!');
+        // return redirect()->route('responden.masyarakat')->with('success', 'Data masyarakat berhasil disimpan!');
+        $redirectTo = session()->pull('intended_url', route('responden.masyarakat'));
+        return redirect($redirectTo)->with('success', 'Data masyarakat berhasil disimpan!');
     }
 }
