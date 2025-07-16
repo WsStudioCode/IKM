@@ -33,13 +33,13 @@ class MasyarakatController extends Controller
 
         $validated['no_telp'] = preg_replace('/^0/', '62', $validated['no_telp']);
 
-        // Nama diisi 'Anonim' sementara
-        $validated['nama'] = 'Anonim';
+        // Nama diisi 'Responden' sementara
+        $validated['nama'] = 'Responden';
 
         $masyarakat = Masyarakat::create($validated);
 
         // Update nama jadi Anonim + ID
-        $masyarakat->update(['nama' => 'Anonim' . $masyarakat->id]);
+        $masyarakat->update(['nama' => 'Responden' . $masyarakat->id]);
 
         session(['masyarakat_id' => $masyarakat->id]);
         session(['masyarakat_name' => $masyarakat->nama]);

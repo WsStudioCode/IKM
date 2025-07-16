@@ -85,8 +85,8 @@ class HasilKuesionerDataTable extends DataTable
                 ->width(30)
                 ->addClass('text-center'),
             Column::make('nama_masyarakat')->title('Nama Masyarakat'),
-            Column::make('nilai_rata_rata')->title('Nilai Rata-Rata'),
-            Column::make('kategori_hasil')->title('Kategori Hasil'),
+            // Column::make('nilai_rata_rata')->title('Nilai Rata-Rata'),
+            // Column::make('kategori_hasil')->title('Kategori Hasil'),
             Column::make('tanggal_isi')->title('Tanggal Isi'),
             Column::computed('action')
                 ->exportable(false)

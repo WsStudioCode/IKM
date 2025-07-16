@@ -27,4 +27,9 @@ class HasilKuesioner extends Model
     {
         return $this->belongsTo(Masyarakat::class);
     }
+
+    public function jawaban()
+    {
+        return $this->hasMany(JawabanKuesioner::class);
+    }
 }

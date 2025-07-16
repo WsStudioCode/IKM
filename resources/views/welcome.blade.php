@@ -46,7 +46,6 @@
                 </div>
             @endif
 
-
             @csrf
 
             {{-- <div>
@@ -54,14 +53,14 @@
                 <input type="text" name="nama" class="w-full mt-1 p-2 border border-gray-300 rounded" required>
             </div> --}}
 
-            <input type="hidden" name="nama" value="Anonim" readonly class="w-full mt-1 p-2 border border-gray-300 rounded" required>
+            <input type="hidden" name="nama" value="Responden" readonly class="w-full mt-1 p-2 border border-gray-300 rounded" required>
 
-            <div>
+            <div class="md:col-span-2">
                 <label class="block text-sm font-medium text-gray-700">Umur</label>
                 <input type="number" name="umur" class="w-full mt-1 p-2 border border-gray-300 rounded" required>
             </div>
 
-            <div>
+            <div class="md:col-span-2">
                 <label class="block text-sm font-medium text-gray-700">Jenis Kelamin</label>
                 <select name="jenis_kelamin" class="w-full mt-1 p-2 border border-gray-300 rounded" required>
                     <option value="">-- Pilih --</option>
@@ -70,7 +69,7 @@
                 </select>
             </div>
 
-            <div>
+            <div class="md:col-span-2">
                 <label for="pendidikan" class="block text-sm font-medium text-gray-700">Pendidikan</label>
                 <select name="pendidikan" id="pendidikan" class="w-full mt-1 p-2 border border-gray-300 rounded"
                     required>
@@ -84,7 +83,7 @@
                 </select>
             </div>
 
-            <div>
+            <div class="md:col-span-2">
                 <label class="block text-sm font-medium text-gray-700">Pekerjaan</label>
                 <input type="text" name="pekerjaan" class="w-full mt-1 p-2 border border-gray-300 rounded" required>
             </div>
@@ -112,8 +111,10 @@
                 </select>
             </div> --}}
 
+            <input type="hidden" name="alamat" value="-" readonly class="w-full mt-1 p-2 border border-gray-300 rounded" required>
+            <input type="hidden" name="no_telp" value="-" readonly class="w-full mt-1 p-2 border border-gray-300 rounded" required>
 
-            <div class="md:col-span-2">
+            {{-- <div class="md:col-span-2">
                 <label class="block text-sm font-medium text-gray-700">Alamat</label>
                 <textarea name="alamat" rows="3" class="w-full mt-1 p-2 border border-gray-300 rounded" required></textarea>
             </div>
@@ -121,7 +122,7 @@
             <div class="md:col-span-2">
                 <label class="block text-sm font-medium text-gray-700">No. Telepon</label>
                 <input type="text" name="no_telp" class="w-full mt-1 p-2 border border-gray-300 rounded" required>
-            </div>
+            </div> --}}
 
             <div class="md:col-span-2 flex justify-between items-center mt-4">
                 <a href="{{ url('/') }}"

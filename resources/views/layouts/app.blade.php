@@ -173,6 +173,13 @@
             </li>
 
             <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('rekap-pertanyaan.*') ? 'active' : '' }}"
+                    href="{{ route('rekap.pertanyaan.index') }}">
+                    <i class="nav-icon fas fa-chart-line"></i> <span>Rekap Kuisioner</span>
+                </a>
+            </li>
+            
+            <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('pengaduan.*') ? 'active' : '' }}"
                     href="{{ route('pengaduan.index') }}">
                     <i class="nav-icon fas fa-comment-alt"></i> <span>Pengaduan</span>

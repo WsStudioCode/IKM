@@ -78,8 +78,26 @@ Route::get('/', function (Request $request) {
         'akhir' => optional($kuesioner->max('tanggal_isi'))->format('d M Y'),
     ];
     $waLink = session('wa_link');
-    return view('responden.masyarakat', compact('pengaduan', 'pelaporTerbaru', 'laporanSukses', 'nilaiIKM', 'jumlahResponden', 'pria', 'wanita', 'pendidikan', 'periode', 'waLink'));
-})->name('responden.masyarakat');
+//     return view('responden.masyarakat', compact('pengaduan', 'pelaporTerbaru', 'laporanSukses', 'nilaiIKM', 'jumlahResponden', 'pria', 'wanita', 'pendidikan', 'periode', 'waLink'));
+// })->name('responden.masyarakat');
+
+    // Rekapitulasi IKM
+    $rekap = \App\Models\JawabanKuesioner::selectRaw('
+                pertanyaan_id,
+                COUNT(*) as total_responden,
+                SUM(jawaban) as total_skor,
+                ROUND(AVG(jawaban), 2) as rata_rata_jawaban
+            ')
+            ->groupBy('pertanyaan_id')
+            ->get();
+
+        $totalIKM = $rekap->sum(function ($item) {
+            return $item->rata_rata_jawaban * 0.11;
+        });
+
+        $nilaiAkhirIKM = round($totalIKM * 25, 2);
+        return view('responden.masyarakat', compact('pengaduan', 'pelaporTerbaru', 'laporanSukses', 'nilaiIKM', 'jumlahResponden', 'pria', 'wanita', 'pendidikan', 'periode', 'waLink', 'nilaiAkhirIKM'));
+    })->name('responden.masyarakat');
 
 Route::get('/masyarakat/form-registrasi', [MasyarakatController::class, 'create'])->name('masyarakat.form');
 Route::post('/masyarakat', [MasyarakatController::class, 'store'])->name('masyarakat.store');
@@ -123,6 +141,8 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 
     // Hasil Kuesioner
     Route::get('/hasil-kuesioner', [HasilKuesionerController::class, 'index'])->name('hasil-kuesioner.index');
+    Route::get('/hasil-kuesioner/{hasil}', [HasilKuesionerController::class, 'show'])->name('hasil-kuesioner.show'); // Show detail hasil kuesioner
+    
     Route::delete('/masyarakat/{masyarakat}', [MasyarakatController::class, 'destroy'])->name('masyarakat.destroy');
     Route::get('/kepuasan/export', [AdminController::class, 'exportKepuasan'])
         ->name('admin.export.kepuasan');
@@ -139,6 +159,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 
     Route::get('/pengaduan/export/pdf', [PengaduanController::class, 'exportPDF'])->name('pengaduan.export.pdf');
     Route::get('/pengaduan/export/excel', [PengaduanController::class, 'exportExcel'])->name('pengaduan.export.excel');
+    Route::get('/rekap-pertanyaan', [HasilKuesionerController::class, 'rekapPerPertanyaan'])->name('rekap.pertanyaan.index');
 
 
     // tindak lanjut
