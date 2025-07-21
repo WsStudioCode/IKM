@@ -316,7 +316,7 @@
                         </div>
 
                         {{-- Laporan Sukses --}}
-                        <div class="bg-white rounded shadow p-4">
+                        {{-- <div class="bg-white rounded shadow p-4">
                             <h4 class="font-semibold text-gray-700 mb-2">Laporan Sukses</h4>
                             <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
                                 @forelse ($laporanSukses as $lapor)
@@ -325,7 +325,7 @@
                                     <li class="text-gray-400 italic">Belum ada laporan selesai</li>
                                 @endforelse
                             </ul>
-                        </div>
+                        </div> --}}
 
                     </div>
                 </div>
